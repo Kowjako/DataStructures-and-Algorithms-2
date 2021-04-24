@@ -24,14 +24,17 @@ class MatrixGraph
         int getEdgeNumber();
         int getNodeNumber();
 
-        ListGraph& dijskstraAlg(int start);
+        void dijkstraAlg(int start);
         ListGraph& bellmanFordAlg(int start);
 
         void generateGraph(int n, int p, bool isDirected);
         bool readFromFile(string filename);
+        int getWeight(int start, int finish);
 
         void clear(int n, bool isDirected); /*usuniecie macierzy poprzedniej i tworzenie nowej */
         int **getMacierz();
+
+        int* countNeighbours(int start);
 
         bool isDirected();
         void setDirected(bool isDirected);
@@ -40,10 +43,11 @@ class MatrixGraph
     protected:
 
     private:
-        bool directed;
-        int **macierz; /*mozliwe tu **adj_mat{} */
+        bool directed; /*graf skierowany lub nie*/
+        int **macierz; /*macierz sasiedztwa */
         int edge_num;
         int node_num;
+        int neighbourCount = 0;
 };
 
 #endif // MATRIXGRAPH_H

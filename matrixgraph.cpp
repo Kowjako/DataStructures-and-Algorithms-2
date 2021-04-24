@@ -1,5 +1,5 @@
 #include "matrixgraph.h"
-
+#include "binaryheap.h"
 MatrixGraph::MatrixGraph()
 {
     this->node_num = 0;
@@ -8,7 +8,9 @@ MatrixGraph::MatrixGraph()
 
 MatrixGraph::~MatrixGraph()
 {
-    //dtor
+    for(int i=0;i<this->node_num ;i++)
+        delete[] this->macierz[i];
+    delete[] this->macierz;
 }
 
 /*Inicjalizacja zmiennych prywatnych */
@@ -88,10 +90,12 @@ void MatrixGraph::setDirected(bool tmpDirected) {
 }
 
 void MatrixGraph::clear(int nodeNumber, bool isDirected) {
+    /*Usuniecie poprzedniego*/
     for(int i=0;i<this->node_num ;i++)
         delete[] this->macierz[i];
     delete[] this->macierz;
 
+    /* Inicjalizacja nowego */
     this->node_num = nodeNumber;
     this->directed = isDirected;
     this->macierz = new int*[this->node_num];
@@ -113,14 +117,6 @@ bool MatrixGraph::readFromFile(string filename) {
     getline(file, str);
 
     clear(nodeNum, this->directed);
-    this->node_num = nodeNum;
-
-    this->macierz = new int*[nodeNum];
-    for(int i = 0;i<nodeNum;i++) {
-        this->macierz[i] = new int[nodeNum];
-        for(int j = 0;j<nodeNum;j++)
-            this->macierz[i][j] = 0;
-    }
 
     int start, finish, weight;
     for(int i=0;i<edgeNum;i++) {
@@ -131,64 +127,97 @@ bool MatrixGraph::readFromFile(string filename) {
     }
 }
 
-ListGraph& MatrixGraph::dijskstraAlg(int start) {
-    bool allVisited = false;
-    int *length = new int[this->node_num];
-    bool *visited = new bool[this->node_num];
-    ListGraph *roads = new ListGraph(this->node_num,true);
-
+void MatrixGraph::dijkstraAlg(int start) {
+    BinaryHeap bheap; /*kolejka*/
+    int u = 0;
+    bool* validated = new bool[this->node_num]; /*tablica sprawdzonych wierzcholkow*/
+    int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
+    int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
+    int* neighbours; /* zbior sasiadow wierzcholka */
     for(int i=0;i<this->node_num;i++) {
-        visited[i] = false;
-        length[i] = INT32_MAX;
-        roads->connect(i, start, 0);
+        d[i] = 10000;
+        p[i] = 10000;
+        validated[i] = false;
     }
+    d[0] = 0;
 
-    visited[start] = true;
-    length[start] = 0;
-
-    for(int i=0;i<this->node_num;i++) {
-        if(this->macierz[i][start] != 0) {
-            length[i] = macierz[i][start];
-            roads->connect(i,i,macierz[i][start]);
-        }
-    }
-    while(!allVisited) {
-        int minLength = INT32_MAX;
-        int order = -1;
+    /*Inicjalizacja kolejki priorytetowej (kopiec-min) */
+    for(int i=0;i<this->node_num;i++)
+        bheap.addItem(d[i]);
+    while(bheap.sizeVar!=0) {
+        int u;
+        int x = bheap.deleteVertex(); /*Pobieramy najmniejsza wage*/
+        /*Znalezenie numeru wierzcholka o najmniejszej wadze d[i]*/
         for(int i=0;i<this->node_num;i++) {
-            if(length[i] <= minLength && !visited[i]) {
-                order = i;
-                minLength = length[i];
-            }
+            if(d[i] == x && validated[i] == false)
+            u = i;
         }
-        node* currentRoad;
-        visited[order] = true;
 
-        for(int i=0;i<this->node_num;i++) {
-            if(this->macierz[i][order]!=0) {
-                int weight = macierz[i][order];
-                if(!visited[i]) {
-                    int currentDistance = length[order] + weight;
-                    if(currentDistance < length[i]) {
-                        length[i] = currentDistance;
-                        roads->connect(order,i,weight);
-                        currentRoad = roads->getHead()[order];
-                        roads->setPath(currentRoad,i);
-                        roads->disconnect(order,i);
-                    }
-                }
+        neighbours = countNeighbours(u); /*szukamy liste indeksow sasiadow */
+        for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
+            int v = neighbours[i];
+            if (d[v] > d[u] + getWeight(u,v)) {
+                d[v] = d[u] + getWeight(u,v); /* Relaksacja */
+                p[v] = u;
             }
         }
 
-        allVisited = true;
+        /*Oznaczamy wierzcholek jako sprawdzony */
+        validated[u] = true;
+        bheap.deleteHeap();
+
+        /*Tworzymy kolejke na podstawie korektowanych drog */
         for(int i=0;i<this->node_num;i++) {
-            if(!visited[i]) {
-                allVisited = false;
-                break;
-            }
+            if(validated[i]!=true)
+                bheap.addItem(d[i]);
         }
     }
-    return *roads;
+    /* Wyswietlenie wyniku */
+    cout<<"Start = "<<start<<endl;
+    for(int i = 1;i<this->node_num;i++) {
+        cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
+        int address = i;
+        cout<<i<<"<-";
+        while(p[address]!=10000) {
+            if(p[address]==0)
+                cout<<p[address];
+            else
+                cout<<p[address]<<"<-";
+            address = p[address];
+        }
+        cout<<endl;
+    }
+
+    /* Zwolnienie pamieci */
+    delete[] validated;
+    delete[] p;
+    delete[] d;
+    delete[] neighbours;
+}
+
+int* MatrixGraph::countNeighbours(int index) {
+    int neighbours = 0;
+    /* Obliczamy ilosc sasiadow */
+    for(int j = 0;j<node_num;j++) {
+        if(this->macierz[index][j]!=0)
+            neighbours++;
+    }
+    /*Ustwaiamy ile ma sasiadow*/
+    this->neighbourCount = neighbours;
+
+    int* neighbourArray = new int[neighbours];
+    int counter = 0;
+    for(int j = 0;j<node_num;j++) {
+        if(this->macierz[index][j]!=0) {
+            neighbourArray[counter] = j;
+            counter++;
+        }
+    }
+    return neighbourArray;
+}
+
+int MatrixGraph::getWeight(int start, int finish) {
+    return this->macierz[start][finish];
 }
 
 
