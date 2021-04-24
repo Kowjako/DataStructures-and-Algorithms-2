@@ -15,7 +15,7 @@ int main()
     matrix.setDirected(true);
     matrix.readFromFile(tmp);
     matrix.print();
-    matrix.dijkstraAlg(0);
+    matrix.bellmanFordAlg(0);
 
     return 0;
 }

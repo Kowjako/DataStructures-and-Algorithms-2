@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <stack>
 #include "listgraph.h"
 
 using namespace std;
@@ -26,6 +27,7 @@ class MatrixGraph
 
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
+        void createListOfEdges(); /*uzyte w algorytmie bellmana-forda*/
 
         bool readFromFile(string filename);
         int getWeight(int start, int finish);
@@ -43,7 +45,8 @@ class MatrixGraph
 
     private:
         bool directed; /*graf skierowany lub nie*/
-        int **macierz; /*macierz sasiedztwa */
+        int** macierz; /*macierz sasiedztwa */
+        int** edgeMacierz; /*macierz dla listy krwaedzi*/
         int edge_num;
         int node_num;
         int neighbourCount = 0;

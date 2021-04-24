@@ -155,16 +155,18 @@ void MatrixGraph::dijkstraAlg(int start) {
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
     int* neighbours = nullptr; /* zbior sasiadow wierzcholka */
 
+    /* Poczatkowa inicjaliacja */
     for(int i=0;i<this->node_num;i++) {
         d[i] = 10000;
         p[i] = 10000;
         validated[i] = false;
     }
-    d[0] = 0;
+    d[start] = 0;
 
     /*Inicjalizacja kolejki priorytetowej (kopiec-min) */
     for(int i=0;i<this->node_num;i++)
         bheap.addItem(d[i]);
+
     while(bheap.sizeVar!=0) {
         int u;
         int x = bheap.deleteVertex(); /*Pobieramy najmniejsza wage*/
@@ -173,8 +175,8 @@ void MatrixGraph::dijkstraAlg(int start) {
             if(d[i] == x && validated[i] == false)
             u = i;
         }
-
-        neighbours = countNeighbours(u); /*szukamy liste indeksow sasiadow */
+        /*szukamy liste indeksow sasiadow */
+        neighbours = countNeighbours(u);
         for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
             int v = neighbours[i];
             if (d[v] > d[u] + getWeight(u,v)) {
@@ -182,7 +184,6 @@ void MatrixGraph::dijkstraAlg(int start) {
                 p[v] = u;
             }
         }
-
         /*Oznaczamy wierzcholek jako sprawdzony */
         validated[u] = true;
         bheap.deleteHeap();
@@ -193,22 +194,27 @@ void MatrixGraph::dijkstraAlg(int start) {
                 bheap.addItem(d[i]);
         }
     }
-    /* Wyswietlenie wyniku */
+
+    /* Wyswietlenie wyniku z wykorzystaniem stosu*/
+    stack<int> roads;
     cout<<"Start = "<<start<<endl;
     for(int i = 1;i<this->node_num;i++) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
         int address = i;
-        cout<<i<<"<-";
+        roads.push(i);
         while(p[address]!=10000) {
-            if(p[address]==0)
-                cout<<p[address];
-            else
-                cout<<p[address]<<"<-";
+            roads.push(p[address]);
             address = p[address];
+        }
+        while(!roads.empty()) {
+            if(roads.size()==1)
+                cout<<roads.top()<<"";
+            else
+                cout<<roads.top()<<"->";
+            roads.pop();
         }
         cout<<endl;
     }
-
     /* Zwolnienie pamieci */
     delete[] validated;
     delete[] p;
@@ -217,9 +223,82 @@ void MatrixGraph::dijkstraAlg(int start) {
 }
 
 void MatrixGraph::bellmanFordAlg(int start) {
+    createListOfEdges();
+    int counter = 0;
+    int* edge = new int[2];
+    int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
+    int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
+    for(int i=0;i<this->node_num;i++) {
+        d[i] = 10000;
+        p[i] = 10000;
+    }
+    d[start] = 0;
 
+    for(int i=0;i<this->node_num-1;i++) {
+        for(int j=0;j<getEdgeNumber();j++) {
+            edge = this->edgeMacierz[counter];
+            if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
+                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
+                p[edge[1]] = edge[0];
+            }
+            counter++;
+        }
+        counter = 0; /*bo trzeba znow przejsc przez kazda krawedz*/
+    }
+    for(int i=0;i<this->edge_num;i++) {
+        edge = this->edgeMacierz[i];
+        if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
+            cout<<"Cykl ujemny w algorytmie Bellmana-Forda"<<endl;
+            return;
+        }
+    }
+
+    /*Wyswietlanie wyniku*/
+    stack<int> roads;
+    cout<<"Start = "<<start<<endl;
+    for(int i = 1;i<this->node_num;i++) {
+        cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
+        int address = i;
+        roads.push(i);
+        while(p[address]!=10000) {
+            roads.push(p[address]);
+            address = p[address];
+        }
+        while(!roads.empty()) {
+            if(roads.size()==1)
+                cout<<roads.top()<<"";
+            else
+                cout<<roads.top()<<"->";
+            roads.pop();
+        }
+        cout<<endl;
+    }
+    /*Zwolnienie pamieci */
+    delete edge;
+    delete[] d;
+    delete[] p;
 }
 
+
+void MatrixGraph::createListOfEdges() {
+    int counter = 0;
+    this->edgeMacierz = new int*[getEdgeNumber()];
+    for(int j=0;j<node_num;j++) {
+        for(int k=0;k<node_num;k++)
+        if(this->macierz[j][k]!=0) {
+            this->edgeMacierz[counter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+            this->edgeMacierz[counter][0] = j;
+            this->edgeMacierz[counter][1] = k;
+            counter++;
+        }
+    }
+
+    /** Wypisanie listy krawedzi **/
+    /* for(int i=0;i<getEdgeNumber();i++) {
+        cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
+        cout<<endl;
+    } */
+}
 
 
 
