@@ -25,9 +25,8 @@ class MatrixGraph
         int getNodeNumber();
 
         void dijkstraAlg(int start);
-        ListGraph& bellmanFordAlg(int start);
+        void bellmanFordAlg(int start);
 
-        void generateGraph(int n, int p, bool isDirected);
         bool readFromFile(string filename);
         int getWeight(int start, int finish);
 

@@ -1,21 +1,17 @@
 #include "matrixgraph.h"
 #include "binaryheap.h"
-MatrixGraph::MatrixGraph()
-{
+MatrixGraph::MatrixGraph() {
     this->node_num = 0;
     this->directed = false;
 }
 
-MatrixGraph::~MatrixGraph()
-{
+MatrixGraph::~MatrixGraph() {
     for(int i=0;i<this->node_num ;i++)
         delete[] this->macierz[i];
     delete[] this->macierz;
 }
 
-/*Inicjalizacja zmiennych prywatnych */
-MatrixGraph::MatrixGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected)
-{
+MatrixGraph::MatrixGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected) {
     this->edge_num = 0;
     if(vertexNumber < 0) {
         this->node_num = 0;
@@ -34,8 +30,32 @@ MatrixGraph::MatrixGraph(int vertexNumber, bool isDirected) : node_num(vertexNum
     }
 }
 
-bool MatrixGraph::connect(int startVertex, int endVertex, int edge)
-{
+int* MatrixGraph::countNeighbours(int index) {
+    int neighbours = 0;
+    /* Obliczamy ilosc sasiadow */
+    for(int j = 0;j<node_num;j++) {
+        if(this->macierz[index][j]!=0)
+            neighbours++;
+    }
+    /*Ustwaiamy ile ma sasiadow*/
+    this->neighbourCount = neighbours;
+
+    int* neighbourArray = new int[neighbours];
+    int counter = 0;
+    for(int j = 0;j<node_num;j++) {
+        if(this->macierz[index][j]!=0) {
+            neighbourArray[counter] = j;
+            counter++;
+        }
+    }
+    return neighbourArray;
+}
+
+int MatrixGraph::getWeight(int start, int finish) {
+    return this->macierz[start][finish];
+}
+
+bool MatrixGraph::connect(int startVertex, int endVertex, int edge) {
     if(startVertex<0 || endVertex<0 || startVertex>node_num || endVertex>node_num) return false;
 
     this->edge_num++; /* Inkrementacja liczby krawedzi */
@@ -46,8 +66,7 @@ bool MatrixGraph::connect(int startVertex, int endVertex, int edge)
     return true;
 }
 
-bool MatrixGraph::disconnect(int startVertex, int endVertex)
-{
+bool MatrixGraph::disconnect(int startVertex, int endVertex) {
     if(startVertex<0 || endVertex<0 || startVertex>node_num || endVertex>node_num) return false;
 
     /* Usuwanie krawedzi poprzez wpisanie 0 */
@@ -129,11 +148,13 @@ bool MatrixGraph::readFromFile(string filename) {
 
 void MatrixGraph::dijkstraAlg(int start) {
     BinaryHeap bheap; /*kolejka*/
-    int u = 0;
+    int u = 0;  /*aktualnie sprawdzany wierzcholek */
+
     bool* validated = new bool[this->node_num]; /*tablica sprawdzonych wierzcholkow*/
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
-    int* neighbours; /* zbior sasiadow wierzcholka */
+    int* neighbours = nullptr; /* zbior sasiadow wierzcholka */
+
     for(int i=0;i<this->node_num;i++) {
         d[i] = 10000;
         p[i] = 10000;
@@ -195,30 +216,10 @@ void MatrixGraph::dijkstraAlg(int start) {
     delete[] neighbours;
 }
 
-int* MatrixGraph::countNeighbours(int index) {
-    int neighbours = 0;
-    /* Obliczamy ilosc sasiadow */
-    for(int j = 0;j<node_num;j++) {
-        if(this->macierz[index][j]!=0)
-            neighbours++;
-    }
-    /*Ustwaiamy ile ma sasiadow*/
-    this->neighbourCount = neighbours;
+void MatrixGraph::bellmanFordAlg(int start) {
 
-    int* neighbourArray = new int[neighbours];
-    int counter = 0;
-    for(int j = 0;j<node_num;j++) {
-        if(this->macierz[index][j]!=0) {
-            neighbourArray[counter] = j;
-            counter++;
-        }
-    }
-    return neighbourArray;
 }
 
-int MatrixGraph::getWeight(int start, int finish) {
-    return this->macierz[start][finish];
-}
 
 
 
