@@ -279,7 +279,6 @@ void MatrixGraph::bellmanFordAlg(int start) {
     delete[] p;
 }
 
-
 void MatrixGraph::createListOfEdges() {
     int counter = 0;
     this->edgeMacierz = new int*[getEdgeNumber()];

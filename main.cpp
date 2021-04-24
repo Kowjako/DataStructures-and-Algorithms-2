@@ -4,7 +4,6 @@
 #include <binaryheap.h>
 using namespace std;
 
-BinaryHeap bHeap;
 MatrixGraph matrix;
 
 int main()
@@ -16,6 +15,7 @@ int main()
     matrix.readFromFile(tmp);
     matrix.print();
     matrix.bellmanFordAlg(0);
+    matrix.dijkstraAlg(0);
 
     return 0;
 }

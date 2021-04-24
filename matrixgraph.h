@@ -25,12 +25,16 @@ class MatrixGraph
         int getEdgeNumber();
         int getNodeNumber();
 
+        /** Algorytmy **/
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
+        void primAlg();
+        void kruskalAlg();
+
         void createListOfEdges(); /*uzyte w algorytmie bellmana-forda*/
 
         bool readFromFile(string filename);
-        int getWeight(int start, int finish);
+        int getWeight(int start, int finish); /*wyszukanie wagi krawedzi z macierzy sasiedztwa */
 
         void clear(int n, bool isDirected); /*usuniecie macierzy poprzedniej i tworzenie nowej */
         int **getMacierz();
@@ -46,7 +50,7 @@ class MatrixGraph
     private:
         bool directed; /*graf skierowany lub nie*/
         int** macierz; /*macierz sasiedztwa */
-        int** edgeMacierz; /*macierz dla listy krwaedzi*/
+        int** edgeMacierz; /*lista krawedzi*/
         int edge_num;
         int node_num;
         int neighbourCount = 0;
