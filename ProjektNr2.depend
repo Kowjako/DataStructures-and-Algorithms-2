@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1618314488 source:d:\codeblocks\projekt\projektnr2\main.cpp
+	<iostream>
+
+1619260000 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
+	"listgraph.h"
+
+1619260000 d:\codeblocks\projekt\projektnr2\listgraph.h
+
