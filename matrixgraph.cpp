@@ -117,7 +117,7 @@ bool MatrixGraph::readFromFile(string filename) {
 
     this->macierz = new int*[nodeNum];
     for(int i = 0;i<nodeNum;i++) {
-        this->macierz = new int[nodeNum];
+        this->macierz[i] = new int[nodeNum];
         for(int j = 0;j<nodeNum;j++)
             this->macierz[i][j] = 0;
     }
@@ -125,8 +125,8 @@ bool MatrixGraph::readFromFile(string filename) {
     int start, finish, weight;
     for(int i=0;i<edgeNum;i++) {
         file>>start;
-        file>>second;
-        file>>cost;
+        file>>finish;
+        file>>weight;
         connect(start,finish, weight);
     }
 }
@@ -135,12 +135,12 @@ ListGraph& MatrixGraph::dijskstraAlg(int start) {
     bool allVisited = false;
     int *length = new int[this->node_num];
     bool *visited = new bool[this->node_num];
-    //ListGraph *roads = new ListGraph(this->node_num,true);
+    ListGraph *roads = new ListGraph(this->node_num,true);
 
     for(int i=0;i<this->node_num;i++) {
         visited[i] = false;
         length[i] = INT32_MAX;
-        //roads->connect(i, start, 0);
+        roads->connect(i, start, 0);
     }
 
     visited[start] = true;
@@ -149,13 +149,46 @@ ListGraph& MatrixGraph::dijskstraAlg(int start) {
     for(int i=0;i<this->node_num;i++) {
         if(this->macierz[i][start] != 0) {
             length[i] = macierz[i][start];
-            //roads->connect(i,i,macierz[i][start]);
+            roads->connect(i,i,macierz[i][start]);
         }
     }
     while(!allVisited) {
+        int minLength = INT32_MAX;
+        int order = -1;
+        for(int i=0;i<this->node_num;i++) {
+            if(length[i] <= minLength && !visited[i]) {
+                order = i;
+                minLength = length[i];
+            }
+        }
+        node* currentRoad;
+        visited[order] = true;
 
+        for(int i=0;i<this->node_num;i++) {
+            if(this->macierz[i][order]!=0) {
+                int weight = macierz[i][order];
+                if(!visited[i]) {
+                    int currentDistance = length[order] + weight;
+                    if(currentDistance < length[i]) {
+                        length[i] = currentDistance;
+                        roads->connect(order,i,weight);
+                        currentRoad = roads->getHead()[order];
+                        roads->setPath(currentRoad,i);
+                        roads->disconnect(order,i);
+                    }
+                }
+            }
+        }
+
+        allVisited = true;
+        for(int i=0;i<this->node_num;i++) {
+            if(!visited[i]) {
+                allVisited = false;
+                break;
+            }
+        }
     }
-
+    return *roads;
 }
 
 

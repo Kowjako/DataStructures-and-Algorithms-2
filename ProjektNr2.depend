@@ -1,9 +1,19 @@
 # depslib dependency file v1.0
-1618314488 source:d:\codeblocks\projekt\projektnr2\main.cpp
+1619262894 source:d:\codeblocks\projekt\projektnr2\main.cpp
 	<iostream>
 
-1619260000 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
+1619267961 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
 	"listgraph.h"
 
-1619260000 d:\codeblocks\projekt\projektnr2\listgraph.h
+1619267985 d:\codeblocks\projekt\projektnr2\listgraph.h
+	<iostream>
+	<fstream>
+
+1619265206 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
+	"matrixgraph.h"
+
+1619262212 d:\codeblocks\projekt\projektnr2\matrixgraph.h
+	<iostream>
+	<fstream>
+	"listgraph.h"
 
