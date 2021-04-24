@@ -2,6 +2,7 @@
 #define MATRIXGRAPH_H
 
 #include <iostream>
+#include <fstream>
 #include "listgraph.h"
 
 using namespace std;
@@ -29,8 +30,8 @@ class MatrixGraph
         void generateGraph(int n, int p, bool isDirected);
         bool readFromFile(string filename);
 
-        void clear(int n, bool isDirected);
-        int **getAdjMat();
+        void clear(int n, bool isDirected); /*usuniecie macierzy poprzedniej i tworzenie nowej */
+        int **getMacierz();
 
         bool isDirected();
         void setDirected(bool isDirected);
@@ -40,7 +41,7 @@ class MatrixGraph
 
     private:
         bool directed;
-        int **adj_mat{};
+        int **macierz; /*mozliwe tu **adj_mat{} */
         int edge_num;
         int node_num;
 };
