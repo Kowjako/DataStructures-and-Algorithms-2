@@ -28,8 +28,8 @@ class MatrixGraph
         /** Algorytmy **/
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
-        void primAlg();
-        void kruskalAlg();
+        void primAlg(int start);
+        void kruskalAlg(int start);
 
         void createListOfEdges(); /*uzyte w algorytmie bellmana-forda*/
 
@@ -37,7 +37,7 @@ class MatrixGraph
         int getWeight(int start, int finish); /*wyszukanie wagi krawedzi z macierzy sasiedztwa */
 
         void clear(int n, bool isDirected); /*usuniecie macierzy poprzedniej i tworzenie nowej */
-        int **getMacierz();
+        int** getMacierz();
 
         int* countNeighbours(int start);
 
