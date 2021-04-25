@@ -13,6 +13,7 @@ ListGraph::ListGraph()
     this->directed = false;
 }
 
+
 ListGraph::ListGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected)
 {
     this->edge_num = 0;
@@ -51,6 +52,31 @@ void ListGraph::clear() {
     this->head = nullptr;
     this->node_num = 0;
     this->edge_num = 0;
+}
+
+void ListGraph::readFromFile(string filename) {
+    ifstream file(filename);
+    int edgeNum, nodeNum;
+    file>>edgeNum; /*wczytanie liczby krawedzi */
+    file>>nodeNum; /*wczytanie liczby wierzcholkow */
+
+    string str;
+    getline(file, str);
+
+    this->node_num = nodeNum;
+    this->head = new node*[node_num];
+    for(int i=0;i<this->node_num;i++) {
+        head[i] = nullptr;
+    }
+    clear();
+
+    int start, finish, weight;
+    for(int i=0;i<edgeNum;i++) {
+        file>>start;
+        file>>finish;
+        file>>weight;
+        connect(start,finish, weight);
+    }
 }
 
 bool ListGraph::connect(int start, int finish, int weight) {
@@ -164,100 +190,5 @@ void ListGraph::print() {
     }
 }
 
-void ListGraph::add() {
-    node** newHead;
-    int nodeNumber = this->node_num++;
-    newHead = new node*[nodeNumber];
-    for(int i = 0 ;i<this->node_num;i++) {
-        newHead[i] = head[i];
-    }
-    newHead[this->node_num] = nullptr;
-    delete[] this->head;
 
-    this->head = newHead;
-    this->node_num++;
-}
 
-int ListGraph::edgeWeight(node* start, node* finish) {
-    node* currentNode = this->head[start->value];
-    while(currentNode!=nullptr) {
-        if(currentNode->value == finish->value) {
-            return currentNode->weight;
-        }
-        currentNode = currentNode->next;
-    }
-    return -1;  /*jezeli nie ma takiej krawedzi zwracamy -1 */
-}
-
-void ListGraph::setPath(node* start, int i) {
-    delete this->head[i];
-    this->head[i] = nullptr;
-    node* currentNode = start;
-    while(currentNode!=nullptr) {
-        this->forceConnect(i, currentNode->value, currentNode->weight);
-        currentNode = currentNode->next;
-    }
-}
-
-void ListGraph::printPaths(int start) {
-    if(head == nullptr) {
-        cout<<"null"<<endl;
-    }
-    for(int i=0;i<this->node_num;i++) {
-        cout<<"Path start "<<start<<" end "<<i;
-        node* currentNode = head[i];
-        cout<<": ";
-        int tmp = 0;
-        while(currentNode!=nullptr) {
-            cout<<currentNode->value<<"["<<currentNode->weight<<"]"<<" => ";
-            currentNode = currentNode->next;
-            tmp++;
-        }
-        cout<<"null"<<endl;
-    }
-}
-
-bool ListGraph::forceConnect(int start, int finish, int weight) {
-    if(start<0 || finish<0 || start>=node_num || finish>=node_num) return false;
-
-    node* newNode = new node;
-    newNode->value = finish;
-    newNode->weight = weight;
-    newNode->next = nullptr;
-
-    node* currentNode = head[start];
-    node* prevNode = currentNode;
-
-    if(currentNode!=nullptr) {
-        currentNode = currentNode->next;
-        while(currentNode!=nullptr) {
-            currentNode =currentNode->next;
-            prevNode = prevNode->next;
-        }
-        prevNode->next = newNode;
-    }
-    else {
-        this->head[start] = newNode;
-    }
-    this->edge_num++;
-    return true;
-}
-
-bool ListGraph::forceDisconnect(int start, int finish) {
-    if(start<0 || finish<0 || start>=node_num || finish>=node_num) return false;
-
-    node* currentNode = head[start];
-    node* prevNode = currentNode;
-
-    while(currentNode!=nullptr) {
-        if(currentNode->value == finish) {
-            prevNode->next = currentNode->next;
-            delete currentNode;
-            return true;
-        }
-        if(currentNode!=prevNode)
-            prevNode = prevNode->next;
-        currentNode = currentNode->next;
-    }
-    return false;
-}

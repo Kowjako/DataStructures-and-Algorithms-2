@@ -26,8 +26,8 @@ class ListGraph
 
         bool connect(int startVertex, int endVertex, int weight);
         bool disconnect(int startVertex, int endVertex);
-        bool forceConnect(int startVertex, int endVertex, int cost);
-        bool forceDisconnect(int startVertex, int endVertex);
+        //bool forceConnect(int startVertex, int endVertex, int cost);
+        //bool forceDisconnect(int startVertex, int endVertex);
 
         void add();
         void print();
@@ -38,13 +38,15 @@ class ListGraph
         bool isConnected(int startVertex, int endVertex, bool *visited);
 
         void setPath(node* start, int i);
+        void readFromFile(string filename);
 
-        ListGraph& dijkstraAlg(int start);
-        ListGraph& bellmanFordAlg(int start);
+        /** Algorytmy **/
+        void dijkstraAlg(int start);
+        void bellmanFordAlg(int start);
 
         node** getHead();
         int edgeWeight(node* startNode, node* finishNode);
-        void copy(int **macierz, int n, bool isDirected);
+        void copyG(int **macierz, int n, bool isDirected);
         void clear();
         void printPaths(int start);
 
