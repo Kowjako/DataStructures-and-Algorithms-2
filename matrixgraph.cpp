@@ -348,7 +348,7 @@ void MatrixGraph::primAlg(int start) {
     /*Koncowe wyswietlanie*/
     int sum = 0;
     for(int i=1;i<this->node_num;i++) {
-        cout<<"("<<p[i]<<";"<<i<<")"<<" WAGA: "<<key[i]<<endl;
+        cout<<"("<<p[i]<<";"<<i<<")"<<" -> "<<key[i]<<endl;
         sum+=key[i];
     }
     cout<<"MST = "<<sum<<endl;
