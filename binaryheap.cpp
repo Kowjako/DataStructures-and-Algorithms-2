@@ -110,7 +110,7 @@ void BinaryHeap::initializate(int sizeValue, int value) {
 }
 
 bool BinaryHeap::findElement(int i,int item) { /* wywolanie funkcji gdzie i wstawiamy 0 - poczatek */
-    if(item>heap[i]) return false;
+    if(item<heap[i]) return false;
     if(item==heap[i]) {
         return true;
     }
