@@ -5,18 +5,17 @@
 using namespace std;
 
 MatrixGraph matrix;
-
+ListGraph listg;
+BinaryHeap b;
 int main()
 {
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    matrix.setDirected(true);
+    matrix.setDirected(false);
     matrix.readFromFile(tmp);
     matrix.print();
-    matrix.bellmanFordAlg(0);
-    matrix.dijkstraAlg(0);
-
+    matrix.primAlg(0);
     return 0;
 }
 
