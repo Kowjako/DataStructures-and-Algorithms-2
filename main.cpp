@@ -15,7 +15,8 @@ int main()
     matrix.setDirected(false);
     matrix.readFromFile(tmp);
     matrix.print();
-    matrix.createSortedEdgesList();
+    matrix.kruskalAlg(0);
+    //matrix.kruskalAlg(0);
     //matrix.print();
     //matrix.createSortedEdgesList();
     /*matrix.print();

@@ -357,6 +357,7 @@ void MatrixGraph::kruskalAlg(int start) {
     }
     int* grupa = new int[this->node_num];
     edge* actualEdge = nullptr;
+
     /*Tworzenie posortowanej listy krawedzi*/
     edge** edges = createSortedEdgesList();
 
@@ -368,9 +369,11 @@ void MatrixGraph::kruskalAlg(int start) {
         actualEdge = edges[i];
         if(grupa[actualEdge->start] != grupa[actualEdge->finish]) {
             isEdgeMakeSolution[i] = true;
-            for(int i=0;i<this->node_num;i++)
-                if(grupa[i] == grupa[actualEdge->finish])
-                    grupa[actualEdge->finish] = grupa[actualEdge->start];
+            int changeValue = grupa[actualEdge->finish]; /* kopia indeksu grupy do zmiany zeby nie byla utracona po pierwszej podmianie */
+            for(int i=0;i<this->node_num;i++) {
+                if(grupa[i] == changeValue)
+                    grupa[i] = grupa[actualEdge->start];
+            }
         }
     }
     /*Wyswietlenie wyniku*/
@@ -392,12 +395,10 @@ edge** MatrixGraph::createSortedEdgesList() {
     /*Tworzenie nieposortowanej listy krawedzi wraz z wagami*/
     for(int i=0;i<this->edge_num;i++) {
         unsortedEdges[i] = new edge;
-        cout<<"u = "<<this->edgeMacierz[i][0]<<" v = "<<this->edgeMacierz[i][1]<< " weight = "<<this->macierz[5][4]<<endl;
         unsortedEdges[i]->start = this->edgeMacierz[i][0];
         unsortedEdges[i]->finish = this->edgeMacierz[i][1];
         unsortedEdges[i]->weight = this->macierz[this->edgeMacierz[i][0]][this->edgeMacierz[i][1]];
     }
-    /** Wypisanie listy krawedzi wraz z wagami- Opcjonalnie**/
 
     /* Sortowanie selekcyjne wedlug wag */
     edge* temp = nullptr;
@@ -416,9 +417,11 @@ edge** MatrixGraph::createSortedEdgesList() {
         unsortedEdges[indmax] = temp;
     }
 
-     for(int i=0;i<getEdgeNumber();i++) {
+    /** Wypisanie listy krawedzi wraz z wagami po sortowaniu- Opcjonalnie**/
+    /* for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<unsortedEdges[i]->start<<", "<<unsortedEdges[i]->finish<<")"<<":"<<unsortedEdges[i]->weight;
         cout<<endl;
-    }
+    } */
+    return unsortedEdges;
 }
 
