@@ -34,8 +34,8 @@ class MatrixGraph
         /** Algorytmy **/
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
-        void primAlg(int start);
-        void kruskalAlg(int start);
+        void primAlg();
+        void kruskalAlg();
 
         void MakeSet(); /*tworzenie poddrzewa wierzcholka */
 

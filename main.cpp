@@ -9,6 +9,7 @@ ListGraph listg;
 BinaryHeap b;
 int main()
 {
+    /* Nie zapominac o setDirect dla algorytmow MST oraz sciezki */
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
@@ -16,14 +17,7 @@ int main()
     matrix.readFromFile(tmp);
     matrix.print();
     matrix.kruskalAlg(0);
-    //matrix.kruskalAlg(0);
-    //matrix.print();
-    //matrix.createSortedEdgesList();
-    /*matrix.print();
-    matrix.primAlg(0);
-    listg.setDirected(false);
-    listg.readFromFile(tmp);
-    listg.print(); */
+
 
 
     return 0;

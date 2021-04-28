@@ -290,7 +290,7 @@ void MatrixGraph::bellmanFordAlg(int start) {
     delete[] p;
 }
 
-void MatrixGraph::primAlg(int start) {
+void MatrixGraph::primAlg() {
     bool* validated  = new bool[this->node_num];
     int* neighbours = nullptr;
     int* key = new int[this->node_num];
@@ -350,7 +350,7 @@ void MatrixGraph::primAlg(int start) {
     delete[] p;
 }
 
-void MatrixGraph::kruskalAlg(int start) {
+void MatrixGraph::kruskalAlg() {
     bool* isEdgeMakeSolution = new bool[this->edge_num];
     for(int i=0;i<this->edge_num;i++) {
         isEdgeMakeSolution[i] = false;
