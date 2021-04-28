@@ -12,9 +12,10 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    matrix.setDirected(true);
+    matrix.setDirected(false);
     matrix.readFromFile(tmp);
-    matrix.bellmanFordAlg(0);
+    matrix.print();
+    matrix.createSortedEdgesList();
     //matrix.print();
     //matrix.createSortedEdgesList();
     /*matrix.print();

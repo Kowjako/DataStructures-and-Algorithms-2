@@ -152,10 +152,10 @@ bool MatrixGraph::readFromFile(string filename) {
     }
 
     /** Wypisanie listy krawedzi - Opcjonalnie **/
-    /*for(int i=0;i<getEdgeNumber();i++) {
+    for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
         cout<<endl;
-    } */
+    }
 }
 
 void MatrixGraph::dijkstraAlg(int start) {
@@ -388,23 +388,20 @@ void MatrixGraph::kruskalAlg(int start) {
 }
 
 edge** MatrixGraph::createSortedEdgesList() {
-    int counter = 0;
-    edge** edgeMacierz = new edge*[getEdgeNumber()];
+    edge** unsortedEdges = new edge*[getEdgeNumber()];
     /*Tworzenie nieposortowanej listy krawedzi wraz z wagami*/
-    for(int i=0;i<edge_num;i++)
-        for(int j=0;j<node_num;j++)
-        for(int k=0;k<node_num;k++) {
-            if(this->macierz[this->edgeMacierz[i][0]][this->macierz[i][1]]!=0)
-            edgeMacierz[i] = new edge;
-            edgeMacierz[i]->start = this->edgeMacierz[i][0];
-            edgeMacierz[i]->finish = this->macierz[i][1];
-            edgeMacierz[i]->weight = this->macierz[this->edgeMacierz[i][0]][this->macierz[i][1]];
-        }
-    /** Wypisanie listy krawedzi **/
-     for(int i=0;i<getEdgeNumber();i++) {
-        cout<<"("<<edgeMacierz[i]->start<<", "<<edgeMacierz[i]->finish<<")"<<":"<<edgeMacierz[i]->weight;
-        cout<<endl;
+    for(int i=0;i<this->edge_num;i++) {
+        unsortedEdges[i] = new edge;
+        cout<<"u = "<<this->edgeMacierz[i][0]<<" v = "<<this->edgeMacierz[i][1]<< " weight = "<<this->macierz[5][4]<<endl;
+        unsortedEdges[i]->start = this->edgeMacierz[i][0];
+        unsortedEdges[i]->finish = this->edgeMacierz[i][1];
+        unsortedEdges[i]->weight = this->macierz[this->edgeMacierz[i][0]][this->edgeMacierz[i][1]];
     }
+    /** Wypisanie listy krawedzi - Opcjonalnie**/
+    /* for(int i=0;i<getEdgeNumber();i++) {
+        cout<<"("<<unsortedEdges[i]->start<<", "<<unsortedEdges[i]->finish<<")"<<":"<<unsortedEdges[i]->weight;
+        cout<<endl;
+    } */
 
     /* Sortowanie wedlug wag */
     //edge** sortedEdges = new edge*[this->edge_num];
