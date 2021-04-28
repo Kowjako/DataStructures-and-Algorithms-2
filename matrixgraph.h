@@ -8,6 +8,12 @@
 
 using namespace std;
 
+struct edge {
+    int start;
+    int finish;
+    int weight;
+};
+
 class MatrixGraph
 {
     public:
@@ -20,8 +26,6 @@ class MatrixGraph
         bool connect(int startVertex, int endVertex, int edge);
         bool disconnect(int startVertex, int endVertex);
 
-        bool isConnected(int x, int y, bool *isVisited);
-
         int getEdgeNumber();
         int getNodeNumber();
 
@@ -31,7 +35,9 @@ class MatrixGraph
         void primAlg(int start);
         void kruskalAlg(int start);
 
-        void createListOfEdges(); /*uzyte w algorytmie bellmana-forda*/
+        void MakeSet(); /*tworzenie poddrzewa wierzcholka */
+
+        edge** createSortedEdgesList(); /* uzyte w algorytmie Kruskala */
 
         bool readFromFile(string filename);
         int getWeight(int start, int finish); /*wyszukanie wagi krawedzi z macierzy sasiedztwa */
@@ -43,8 +49,6 @@ class MatrixGraph
 
         bool isDirected();
         void setDirected(bool isDirected);
-
-
     protected:
 
     private:
