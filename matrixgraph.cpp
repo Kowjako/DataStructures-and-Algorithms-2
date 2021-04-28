@@ -152,10 +152,10 @@ bool MatrixGraph::readFromFile(string filename) {
     }
 
     /** Wypisanie listy krawedzi - Opcjonalnie **/
-    for(int i=0;i<getEdgeNumber();i++) {
+    /* for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
         cout<<endl;
-    }
+    } */
 }
 
 void MatrixGraph::dijkstraAlg(int start) {
@@ -397,13 +397,28 @@ edge** MatrixGraph::createSortedEdgesList() {
         unsortedEdges[i]->finish = this->edgeMacierz[i][1];
         unsortedEdges[i]->weight = this->macierz[this->edgeMacierz[i][0]][this->edgeMacierz[i][1]];
     }
-    /** Wypisanie listy krawedzi - Opcjonalnie**/
-    /* for(int i=0;i<getEdgeNumber();i++) {
+    /** Wypisanie listy krawedzi wraz z wagami- Opcjonalnie**/
+
+    /* Sortowanie selekcyjne wedlug wag */
+    edge* temp = nullptr;
+    int SIZE = this->getEdgeNumber();
+    for(int i=0;i<SIZE-1;i++) {
+        edge* maximum = unsortedEdges[0];
+        int indmax = 0;
+        for(int j=0;j<SIZE-i;j++) {
+            if(unsortedEdges[j]->weight>maximum->weight) {
+                maximum=unsortedEdges[j];
+                indmax = j;
+            }
+        }
+        temp = unsortedEdges[SIZE-1-i];
+        unsortedEdges[SIZE-1-i] = maximum;
+        unsortedEdges[indmax] = temp;
+    }
+
+     for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<unsortedEdges[i]->start<<", "<<unsortedEdges[i]->finish<<")"<<":"<<unsortedEdges[i]->weight;
         cout<<endl;
-    } */
-
-    /* Sortowanie wedlug wag */
-    //edge** sortedEdges = new edge*[this->edge_num];
+    }
 }
 

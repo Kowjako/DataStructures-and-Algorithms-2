@@ -13,21 +13,23 @@
 	<fstream>
 	"binaryheap.h"
 
-1619635680 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
+1619636743 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
 	"matrixgraph.h"
 	"binaryheap.h"
 
-1619634784 d:\codeblocks\projekt\projektnr2\matrixgraph.h
+1619635963 d:\codeblocks\projekt\projektnr2\matrixgraph.h
 	<iostream>
 	<fstream>
 	<stack>
 	"listgraph.h"
+	<algorithm>
 
-1619634784 d:\codeblocks\projekt\projektnr2\\matrixgraph.h
+1619635963 d:\codeblocks\projekt\projektnr2\\matrixgraph.h
 	<iostream>
 	<fstream>
 	<stack>
 	"listgraph.h"
+	<algorithm>
 
 1619634784 d:\codeblocks\projekt\projektnr2\\listgraph.h
 	<iostream>
