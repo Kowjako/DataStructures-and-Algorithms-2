@@ -388,6 +388,8 @@ void MatrixGraph::kruskalAlg(int start) {
     /*Zwolnienie pamieci*/
     delete[] isEdgeMakeSolution;
     delete[] grupa;
+    delete[] edges;
+    delete actualEdge;
 }
 
 edge** MatrixGraph::createSortedEdgesList() {
