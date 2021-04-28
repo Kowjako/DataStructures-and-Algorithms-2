@@ -1,21 +1,17 @@
 #include "listgraph.h"
 
-ListGraph::~ListGraph()
-{
+ListGraph::~ListGraph() {
     //dtor
 }
 
-ListGraph::ListGraph()
-{
+ListGraph::ListGraph() {
     this->head = nullptr;
     this->node_num = 0;
     this->edge_num = 0;
     this->directed = false;
 }
 
-
-ListGraph::ListGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected)
-{
+ListGraph::ListGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected) {
     this->edge_num = 0;
     this->head = new node*[vertexNumber];
     for(int i=0;i<this->node_num;i++) {
@@ -68,7 +64,6 @@ void ListGraph::readFromFile(string filename) {
     for(int i=0;i<this->node_num;i++) {
         head[i] = nullptr;
     }
-    clear();
 
     int start, finish, weight;
     for(int i=0;i<edgeNum;i++) {
@@ -82,6 +77,7 @@ void ListGraph::readFromFile(string filename) {
 bool ListGraph::connect(int start, int finish, int weight) {
     if(start<0 || finish<0 || start>=node_num || finish>=node_num) return false;
 
+    /* Tworzymy nowy wezel */
     node* newNode = new node;
     newNode->value = finish;
     newNode->weight = weight;
@@ -90,16 +86,18 @@ bool ListGraph::connect(int start, int finish, int weight) {
     node* currentNode = head[start];
     node* prevNode = currentNode;
 
+    /*Jezeli start nie ma sasiadow to robimy jako pierwszego */
     if(head[start] == nullptr) {
         head[start] = newNode;
     }
-    else
+    else    /*Jezeli ma sasiadow dodajemy na koniec */
     {
         while(currentNode!=nullptr) {
-            if(currentNode->value > newNode->value) {
+            /*Wstawianie w posortowanej kolejnosci */
+            if(currentNode->value > newNode->value) {   /*Sprawdzamy czy obecny indeks jest wiekszy */
                 if(prevNode == currentNode) {
-                    head[start] = newNode;
-                    newNode->next = currentNode;
+                    head[start] = newNode;      /*Jezeli wiekszy to wstawiamy nasz nowy*/
+                    newNode->next = currentNode;    /*Przesuwamy obecny jako nastepny odnosnie wstawionego */
                 }
                 else {
                     prevNode->next = newNode;
@@ -107,10 +105,12 @@ bool ListGraph::connect(int start, int finish, int weight) {
                 }
                 break;
             }
-            else if(currentNode->value == newNode->value) {
+            else
+            if(currentNode->value == newNode->value) {
                 this->edge_num++;
                 return true;
             }
+            /* Przechodzimy do kolejnego sasiada */
             prevNode = currentNode;
             currentNode = currentNode->next;
         }
@@ -119,6 +119,7 @@ bool ListGraph::connect(int start, int finish, int weight) {
             prevNode->next = newNode;
     }
 
+    /*Jezeli skierowany to laczymy odwrotnie tez */
     if(!this->directed) {
         return connect(finish,start,weight);
     }
@@ -166,7 +167,7 @@ bool ListGraph::disconnect(int start, int finish) {
             currentNode = currentNode->next;
         }
     }
-
+    /*Jezeli skierowany to usuwamy tez odwrotnie */
     if(!this->directed) {
         return disconnect(finish,start);
     }
@@ -179,7 +180,7 @@ void ListGraph::print() {
         cout<<"puste"<<endl;
     }
     for(int i = 0;i<node_num;i++) {
-        cout<<i;
+        cout<<i;    /*Indeks wierzcholku */
         node* currentNode = head[i];    /*Bierzemy pierwszy element*/
         cout<<": ";
         while(currentNode!=nullptr) {   /* Poki nie jestesmy w koncu */
@@ -188,6 +189,10 @@ void ListGraph::print() {
         }
         cout<<"null"<<endl;
     }
+}
+
+void ListGraph::dijkstraAlg(int start) {
+
 }
 
 

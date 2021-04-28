@@ -3,14 +3,10 @@
 
 #include <iostream>
 #include <fstream>
+#include "binaryheap.h"
 
 using namespace std;
 
-struct edge {
-    int start;
-    int end;
-    int weight;
-};
 
 struct node {
     int value;
@@ -43,6 +39,8 @@ class ListGraph
         /** Algorytmy **/
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
+        void primAlg(int start);
+        void kruskalAlg(int start);
 
         node** getHead();
         int edgeWeight(node* startNode, node* finishNode);
@@ -55,7 +53,7 @@ class ListGraph
     protected:
 
     private:
-        node **head;
+        node **head;    /*tablica wskaznikow jako kolejnych wierzhoclkow oraz ich sasiadow */
         bool directed;
         int node_num;
         int edge_num;
