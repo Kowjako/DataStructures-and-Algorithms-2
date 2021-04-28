@@ -133,6 +133,8 @@ bool MatrixGraph::readFromFile(string filename) {
     file>>edgeNum; /*wczytanie liczby krawedzi */
     file>>nodeNum; /*wczytanie liczby wierzcholkow */
 
+    this->edgeMacierz = new int*[edgeNum]; /*tworzenie listy krawedzi potrzebnej do algroytmow */
+
     string str;
     getline(file, str);
 
@@ -144,7 +146,16 @@ bool MatrixGraph::readFromFile(string filename) {
         file>>finish;
         file>>weight;
         connect(start,finish, weight);
+        this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+        this->edgeMacierz[i][0] = start;
+        this->edgeMacierz[i][1] = finish;
     }
+
+    /** Wypisanie listy krawedzi - Opcjonalnie **/
+    /*for(int i=0;i<getEdgeNumber();i++) {
+        cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
+        cout<<endl;
+    } */
 }
 
 void MatrixGraph::dijkstraAlg(int start) {
@@ -224,7 +235,6 @@ void MatrixGraph::dijkstraAlg(int start) {
 }
 
 void MatrixGraph::bellmanFordAlg(int start) {
-    createListOfEdges();
     int counter = 0;
     int* edge = new int[2];
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
@@ -280,26 +290,6 @@ void MatrixGraph::bellmanFordAlg(int start) {
     delete[] p;
 }
 
-void MatrixGraph::createListOfEdges() {
-    int counter = 0;
-    this->edgeMacierz = new int*[getEdgeNumber()];
-    for(int j=0;j<node_num;j++) {
-        for(int k=0;k<node_num;k++)
-        if(this->macierz[j][k]!=0) {
-            this->edgeMacierz[counter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
-            this->edgeMacierz[counter][0] = j;
-            this->edgeMacierz[counter][1] = k;
-            counter++;
-        }
-    }
-
-    /** Wypisanie listy krawedzi **/
-    /* for(int i=0;i<getEdgeNumber();i++) {
-        cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
-        cout<<endl;
-    } */
-}
-
 void MatrixGraph::primAlg(int start) {
     bool* validated  = new bool[this->node_num];
     int* neighbours = nullptr;
@@ -352,11 +342,71 @@ void MatrixGraph::primAlg(int start) {
         sum+=key[i];
     }
     cout<<"MST = "<<sum<<endl;
+
+    /*Zwolnienie pamieci */
+    delete[] validated;
+    delete[] neighbours;
+    delete[] key;
+    delete[] p;
 }
 
 void MatrixGraph::kruskalAlg(int start) {
+    bool* isEdgeMakeSolution = new bool[this->edge_num];
+    for(int i=0;i<this->edge_num;i++) {
+        isEdgeMakeSolution[i] = false;
+    }
+    int* grupa = new int[this->node_num];
+    edge* actualEdge = nullptr;
+    /*Tworzenie posortowanej listy krawedzi*/
+    edge** edges = createSortedEdgesList();
 
+    /* Tworzenie poddrzew */
+    for(int i=0;i<this->node_num;i++) {
+        grupa[i] = i;
+    }
+    for(int i = 0;i<this->edge_num;i++) {
+        actualEdge = edges[i];
+        if(grupa[actualEdge->start] != grupa[actualEdge->finish]) {
+            isEdgeMakeSolution[i] = true;
+            for(int i=0;i<this->node_num;i++)
+                if(grupa[i] == grupa[actualEdge->finish])
+                    grupa[actualEdge->finish] = grupa[actualEdge->start];
+        }
+    }
+    /*Wyswietlenie wyniku*/
+    int sum = 0;
+    for(int i=0;i<this->edge_num;i++) {
+        if(isEdgeMakeSolution[i]) {
+            cout<<"("<<edges[i]->start<<";"<<edges[i]->finish<<")"<<" -> "<<edges[i]->weight<<endl;
+            sum+=edges[i]->weight;
+        }
+    }
+    cout<<"MST = "<<sum<<endl;
+    /*Zwolnienie pamieci*/
+    delete[] isEdgeMakeSolution;
+    delete[] grupa;
 }
 
+edge** MatrixGraph::createSortedEdgesList() {
+    int counter = 0;
+    edge** edgeMacierz = new edge*[getEdgeNumber()];
+    /*Tworzenie nieposortowanej listy krawedzi wraz z wagami*/
+    for(int i=0;i<edge_num;i++)
+        for(int j=0;j<node_num;j++)
+        for(int k=0;k<node_num;k++) {
+            if(this->macierz[this->edgeMacierz[i][0]][this->macierz[i][1]]!=0)
+            edgeMacierz[i] = new edge;
+            edgeMacierz[i]->start = this->edgeMacierz[i][0];
+            edgeMacierz[i]->finish = this->macierz[i][1];
+            edgeMacierz[i]->weight = this->macierz[this->edgeMacierz[i][0]][this->macierz[i][1]];
+        }
+    /** Wypisanie listy krawedzi **/
+     for(int i=0;i<getEdgeNumber();i++) {
+        cout<<"("<<edgeMacierz[i]->start<<", "<<edgeMacierz[i]->finish<<")"<<":"<<edgeMacierz[i]->weight;
+        cout<<endl;
+    }
 
+    /* Sortowanie wedlug wag */
+    //edge** sortedEdges = new edge*[this->edge_num];
+}
 
