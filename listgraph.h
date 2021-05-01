@@ -56,6 +56,7 @@ class ListGraph
         int node_num;
         int edge_num;
         int neighbourCount;
+        int** edgeMacierz;  /*lista krawedzi */
 };
 
 #endif // LISTGRAPH_H

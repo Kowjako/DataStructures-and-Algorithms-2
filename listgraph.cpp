@@ -59,6 +59,8 @@ void ListGraph::readFromFile(string filename) {
     string str;
     getline(file, str);
 
+    this->edgeMacierz = new int*[edgeNum];
+
     this->node_num = nodeNum;
     this->head = new node*[node_num];
     for(int i=0;i<this->node_num;i++) {
@@ -71,6 +73,9 @@ void ListGraph::readFromFile(string filename) {
         file>>finish;
         file>>weight;
         connect(start,finish, weight);
+        this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+        this->edgeMacierz[i][0] = start;
+        this->edgeMacierz[i][1] = finish;
     }
 }
 
@@ -124,6 +129,7 @@ bool ListGraph::connect(int start, int finish, int weight) {
         return connect(finish,start,weight);
     }
 
+    this->edge_num++;
     return true;
 }
 
@@ -299,5 +305,64 @@ int ListGraph::getWeight(int start, int finish) {
     }
 }
 
+void ListGraph::bellmanFordAlg(int start) {
+    cout<<"edge num = "<<getEdgeNumber()<<endl;
+    int counter = 0;
+    int* edge = new int[2];
+    int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
+    int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
+    for(int i=0;i<this->node_num;i++) {
+        d[i] = 10000;
+        p[i] = 10000;
+    }
+    d[start] = 0;
 
+    for(int i=0;i<this->node_num-1;i++) {
+        for(int j=0;j<getEdgeNumber();j++) {
+            edge = this->edgeMacierz[counter];
+            if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
+                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
+                p[edge[1]] = edge[0];
+            }
+            counter++;
+        }
+        counter = 0; /*bo trzeba znow przejsc przez kazda krawedz*/
+    }
+    for(int i=0;i<this->edge_num;i++) {
+        edge = this->edgeMacierz[i];
+        if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
+            cout<<"Cykl ujemny w algorytmie Bellmana-Forda"<<endl;
+            return;
+        }
+    }
 
+    /*Wyswietlanie wyniku*/
+    stack<int> roads;
+    cout<<"Start = "<<start<<endl;
+    for(int i = 1;i<this->node_num;i++) {
+        cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
+        int address = i;
+        roads.push(i);
+        /*Odkladamy na stosie az do poczatkowego bo poprzednik poczatkowego to 10000*/
+        while(p[address]!=10000) {
+            roads.push(p[address]);
+            address = p[address];
+        }
+        /*Pobieramy ze stosu i wyswietlamy */
+        while(!roads.empty()) {
+            if(roads.size()==1)
+                cout<<roads.top()<<"";
+            else
+                cout<<roads.top()<<"->";
+            roads.pop();
+        }
+        cout<<endl;
+    }
+    /*Zwolnienie pamieci */
+    delete edge;
+    delete[] d;
+    delete[] p;
+}
+
+void ListGraph::kruskalAlg() {
+}
