@@ -36,8 +36,6 @@ class MatrixGraph
         void primAlg();
         void kruskalAlg();
 
-        void MakeSet(); /*tworzenie poddrzewa wierzcholka */
-
         edge** createSortedEdgesList(); /* uzyte w algorytmie Kruskala */
 
         bool readFromFile(string filename);
