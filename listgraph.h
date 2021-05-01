@@ -9,6 +9,12 @@
 
 using namespace std;
 
+struct listEdge {
+    int start;
+    int finish;
+    int weight;
+};
+
 struct node {
     int value;
     int weight;
@@ -40,7 +46,7 @@ class ListGraph
         void kruskalAlg();
 
         int getWeight(int start, int finish);
-        edge** createSortedEdgesList();
+        listEdge** createSortedEdgesList();
 
         node** getHead();
         int* countNeighbours(int index);

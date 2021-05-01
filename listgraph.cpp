@@ -430,10 +430,10 @@ void ListGraph::kruskalAlg() {
         isEdgeMakeSolution[i] = false;
     }
     int* grupa = new int[this->node_num];
-    edge* actualEdge = nullptr;
+    listEdge* actualEdge = nullptr;
 
     /*Tworzenie posortowanej listy krawedzi*/
-    edge** edges = createSortedEdgesList();
+    listEdge** edges = createSortedEdgesList();
 
     /* Tworzenie poddrzew */
     for(int i=0;i<this->node_num;i++) {
@@ -466,30 +466,22 @@ void ListGraph::kruskalAlg() {
     delete actualEdge;
 }
 
-edge** ListGraph::createSortedEdgesList() {
-    edge** unsortedEdges = new edge*[getEdgeNumber()];
+listEdge** ListGraph::createSortedEdgesList() {
+    listEdge** unsortedEdges = new listEdge*[getEdgeNumber()];
+
     /*Tworzenie nieposortowanej listy krawedzi wraz z wagami*/
     for(int i=0;i<this->edge_num;i++) {
-        unsortedEdges[i] = new edge;
+        unsortedEdges[i] = new listEdge;
         unsortedEdges[i]->start = this->edgeMacierz[i][0];
         unsortedEdges[i]->finish = this->edgeMacierz[i][1];
-        /*Przechdodzimy do okreslonego wierzcholka */
-        node* startNode = this->head[this->edgeMacierz[i][0]];
-        /* Znalezenie w liscie sasiadow odpowidnika oraz wage krawedzi */
-        while(startNode!=nullptr) {
-            if(startNode->value = this->edgeMacierz[i][1]) {
-                unsortedEdges[i]->weight = startNode->weight;
-                break;
-            }
-            startNode = startNode->next;
-        }
+        unsortedEdges[i]->weight = getWeight(this->edgeMacierz[i][0],this->edgeMacierz[i][1]);
     }
 
     /* Sortowanie selekcyjne wedlug wag */
-    edge* temp = nullptr;
+    listEdge* temp = nullptr;
     int SIZE = this->getEdgeNumber();
     for(int i=0;i<SIZE-1;i++) {
-        edge* maximum = unsortedEdges[0];
+        listEdge* maximum = unsortedEdges[0];
         int indmax = 0;
         for(int j=0;j<SIZE-i;j++) {
             if(unsortedEdges[j]->weight>maximum->weight) {
