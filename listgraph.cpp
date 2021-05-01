@@ -242,7 +242,7 @@ void ListGraph::dijkstraAlg(int start) {
 
     /* Wyswietlenie wyniku z wykorzystaniem stosu*/
     stack<int> roads;
-    /*cout<<"Start = "<<start<<endl;
+    cout<<"Start = "<<start<<endl;
     for(int i = 1;i<this->node_num;i++) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
         int address = i;
@@ -259,12 +259,12 @@ void ListGraph::dijkstraAlg(int start) {
             roads.pop();
         }
         cout<<endl;
-    } */
+    }
     /* Zwolnienie pamieci */
-//    delete[] validated;
-  //  delete[] p;
-   // delete[] d;
-   // delete[] neighbours;
+    delete[] validated;
+    delete[] p;
+    delete[] d;
+    delete[] neighbours;
 }
 
 int* ListGraph::countNeighbours(int index) {
