@@ -1,37 +1,37 @@
 # depslib dependency file v1.0
-1619639989 source:d:\codeblocks\projekt\projektnr2\main.cpp
+1619866912 source:d:\codeblocks\projekt\projektnr2\main.cpp
 	<iostream>
 	<matrixgraph.h>
 	<listgraph.h>
 	<binaryheap.h>
 
-1619639989 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
+1619866872 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
 	"listgraph.h"
 
-1619639989 d:\codeblocks\projekt\projektnr2\listgraph.h
+1619866872 d:\codeblocks\projekt\projektnr2\listgraph.h
 	<iostream>
 	<fstream>
 	"binaryheap.h"
 
-1619640081 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
+1619866931 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
 	"matrixgraph.h"
 	"binaryheap.h"
 
-1619639989 d:\codeblocks\projekt\projektnr2\matrixgraph.h
+1619866898 d:\codeblocks\projekt\projektnr2\matrixgraph.h
 	<iostream>
 	<fstream>
 	<stack>
 	"listgraph.h"
 	<algorithm>
 
-1619639989 d:\codeblocks\projekt\projektnr2\\matrixgraph.h
+1619866898 d:\codeblocks\projekt\projektnr2\\matrixgraph.h
 	<iostream>
 	<fstream>
 	<stack>
 	"listgraph.h"
 	<algorithm>
 
-1619639989 d:\codeblocks\projekt\projektnr2\\listgraph.h
+1619866872 d:\codeblocks\projekt\projektnr2\\listgraph.h
 	<iostream>
 	<fstream>
 	"binaryheap.h"

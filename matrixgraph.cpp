@@ -301,8 +301,8 @@ void MatrixGraph::primAlg() {
         key[i] = 10000;
         validated[i] = false;
     }
-    key[start] = 0;
-    p[start] = 10000;
+    key[0] = 0;
+    p[0] = 10000;
 
     /*Inicjalizacja kolejki priorytetowej*/
     for(int i=0;i<this->node_num;i++)

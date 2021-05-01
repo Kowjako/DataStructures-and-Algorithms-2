@@ -13,7 +13,6 @@ struct edge {
     int start;
     int finish;
     int weight;
-    bool operator()(const edge& first, const edge& second) const { first.weight < second.weight; }
 };
 
 class MatrixGraph

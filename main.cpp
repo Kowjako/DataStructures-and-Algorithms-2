@@ -16,7 +16,7 @@ int main()
     matrix.setDirected(false);
     matrix.readFromFile(tmp);
     matrix.print();
-    matrix.kruskalAlg(0);
+    matrix.kruskalAlg();
 
 
 
