@@ -289,5 +289,15 @@ int* ListGraph::countNeighbours(int index) {
     return neigbourArray;
 }
 
+int ListGraph::getWeight(int start, int finish) {
+    /*Przechodzimy do potrzebnej listy */
+    node* startNode = head[start];
+    while(startNode!=nullptr) {
+        if(startNode->value==finish)
+            return startNode->weight;
+        startNode = startNode->next;
+    }
+}
+
 
 

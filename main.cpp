@@ -16,7 +16,7 @@ int main()
     listg.setDirected(true);
     listg.readFromFile(tmp);
     listg.print();
-
+    cout<<listg.getWeight(5,3);
     return 0;
 }
 

@@ -24,15 +24,13 @@ class ListGraph
         bool connect(int startVertex, int endVertex, int weight);
         bool disconnect(int startVertex, int endVertex);
 
-        void add();
         void print();
         bool isDirected();
         void setDirected(bool isDirected);
+
         int getNodeNumber();
         int getEdgeNumber();
-        bool isConnected(int startVertex, int endVertex, bool *visited);
 
-        void setPath(node* start, int i);
         void readFromFile(string filename);
 
         /** Algorytmy **/
@@ -40,6 +38,8 @@ class ListGraph
         void bellmanFordAlg(int start);
         void primAlg(int start);
         void kruskalAlg(int start);
+
+        int getWeight(int start, int finish);
 
         node** getHead();
         int* countNeighbours(int index);
