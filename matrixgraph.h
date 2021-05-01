@@ -6,6 +6,8 @@
 #include <stack>
 #include "listgraph.h"
 #include <algorithm>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -35,6 +37,8 @@ class MatrixGraph
         void bellmanFordAlg(int start);
         void primAlg();
         void kruskalAlg();
+
+        void createRandomGraph(int vertexNumber,bool direction, int edgeNumber);
 
         edge** createSortedEdgesList(); /* uzyte w algorytmie Kruskala */
 

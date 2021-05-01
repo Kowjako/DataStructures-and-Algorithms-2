@@ -427,3 +427,31 @@ edge** MatrixGraph::createSortedEdgesList() {
     return unsortedEdges;
 }
 
+void MatrixGraph::createRandomGraph(int vertexNumber, bool isDirected, int edgeNumber) {
+    /* Maks. ilosc krawedzi to graf pelny wynosi n*(n-1)/2 a minimalna to n-1*/
+    if(edgeNumber>(vertexNumber)*(vertexNumber-1)*0.5 || edgeNumber<vertexNumber-1) {
+        cout<<"Nie moze byc tyle krawedzi!"<<endl;
+        return;
+    }
+    /* Usuniecie poprzedniego gdy istnial i inicjowanie nowego */
+    clear(vertexNumber,isDirected);
+
+    int maxEdgeNumber = (vertexNumber * vertexNumber - vertexNumber) / 2; /* graf pelny */
+
+
+    /* Tworzenie grafu minimalnego = spojnego */
+    for (int i=0; i<this->node_num-1;i++) { /* minimalna ilosc krawedzi = n - 1 aby graf byl spojny */
+        connect(i,i + 1,rand()%30+1);
+    }
+    int i,j;
+    /*Nastepnie tworzymy do zadanej ilosci krawedzi */
+    while(this->edge_num!=edgeNumber) {
+        i = rand()%vertexNumber; /*losowanie pozycji do wstawienia */
+        j = rand()%vertexNumber; /*losowanie pozycji do wstawienia */
+        if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia */
+            connect(i,j,rand()%30+1);   /*polacz*/
+        }
+    }
+
+
+}
