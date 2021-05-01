@@ -5,9 +5,9 @@
 #include <fstream>
 #include "binaryheap.h"
 #include <stack>
+#include "matrixgraph.h"
 
 using namespace std;
-
 
 struct node {
     int value;
@@ -40,6 +40,7 @@ class ListGraph
         void kruskalAlg();
 
         int getWeight(int start, int finish);
+        edge** createSortedEdgesList();
 
         node** getHead();
         int* countNeighbours(int index);

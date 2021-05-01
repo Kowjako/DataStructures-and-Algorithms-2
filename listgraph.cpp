@@ -423,3 +423,89 @@ void ListGraph::primAlg() {
     delete[] key;
     delete[] p;
 }
+
+void ListGraph::kruskalAlg() {
+    bool* isEdgeMakeSolution = new bool[this->edge_num];
+    for(int i=0;i<this->edge_num;i++) {
+        isEdgeMakeSolution[i] = false;
+    }
+    int* grupa = new int[this->node_num];
+    edge* actualEdge = nullptr;
+
+    /*Tworzenie posortowanej listy krawedzi*/
+    edge** edges = createSortedEdgesList();
+
+    /* Tworzenie poddrzew */
+    for(int i=0;i<this->node_num;i++) {
+        grupa[i] = i;
+    }
+    for(int i = 0;i<this->edge_num;i++) {
+        actualEdge = edges[i];
+        if(grupa[actualEdge->start] != grupa[actualEdge->finish]) {
+            isEdgeMakeSolution[i] = true;
+            int changeValue = grupa[actualEdge->finish]; /* kopia indeksu grupy do zmiany zeby nie byla utracona po pierwszej podmianie */
+            for(int i=0;i<this->node_num;i++) {
+                if(grupa[i] == changeValue)
+                    grupa[i] = grupa[actualEdge->start];
+            }
+        }
+    }
+    /*Wyswietlenie wyniku*/
+    int sum = 0;
+    for(int i=0;i<this->edge_num;i++) {
+        if(isEdgeMakeSolution[i]) {
+            cout<<"("<<edges[i]->start<<";"<<edges[i]->finish<<")"<<" -> "<<edges[i]->weight<<endl;
+            sum+=edges[i]->weight;
+        }
+    }
+    cout<<"MST = "<<sum<<endl;
+    /*Zwolnienie pamieci*/
+    delete[] isEdgeMakeSolution;
+    delete[] grupa;
+    delete[] edges;
+    delete actualEdge;
+}
+
+edge** ListGraph::createSortedEdgesList() {
+    edge** unsortedEdges = new edge*[getEdgeNumber()];
+    /*Tworzenie nieposortowanej listy krawedzi wraz z wagami*/
+    for(int i=0;i<this->edge_num;i++) {
+        unsortedEdges[i] = new edge;
+        unsortedEdges[i]->start = this->edgeMacierz[i][0];
+        unsortedEdges[i]->finish = this->edgeMacierz[i][1];
+        /*Przechdodzimy do okreslonego wierzcholka */
+        node* startNode = this->head[this->edgeMacierz[i][0]];
+        /* Znalezenie w liscie sasiadow odpowidnika oraz wage krawedzi */
+        while(startNode!=nullptr) {
+            if(startNode->value = this->edgeMacierz[i][1]) {
+                unsortedEdges[i]->weight = startNode->weight;
+                break;
+            }
+            startNode = startNode->next;
+        }
+    }
+
+    /* Sortowanie selekcyjne wedlug wag */
+    edge* temp = nullptr;
+    int SIZE = this->getEdgeNumber();
+    for(int i=0;i<SIZE-1;i++) {
+        edge* maximum = unsortedEdges[0];
+        int indmax = 0;
+        for(int j=0;j<SIZE-i;j++) {
+            if(unsortedEdges[j]->weight>maximum->weight) {
+                maximum=unsortedEdges[j];
+                indmax = j;
+            }
+        }
+        temp = unsortedEdges[SIZE-1-i];
+        unsortedEdges[SIZE-1-i] = maximum;
+        unsortedEdges[indmax] = temp;
+    }
+
+    /** Wypisanie listy krawedzi wraz z wagami po sortowaniu- Opcjonalnie**/
+    /* for(int i=0;i<getEdgeNumber();i++) {
+        cout<<"("<<unsortedEdges[i]->start<<", "<<unsortedEdges[i]->finish<<")"<<":"<<unsortedEdges[i]->weight;
+        cout<<endl;
+    } */
+    return unsortedEdges;
+}

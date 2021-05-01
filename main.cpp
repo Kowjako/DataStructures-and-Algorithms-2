@@ -16,7 +16,7 @@ int main()
     listg.setDirected(false);
     listg.readFromFile(tmp);
     listg.print();
-    listg.primAlg();
+    listg.kruskalAlg();
     return 0;
 }
 
