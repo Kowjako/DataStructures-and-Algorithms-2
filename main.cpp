@@ -13,11 +13,8 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    listg.setDirected(false);
-    listg.readFromFile(tmp);
-    listg.print();
-    listg.primAlg();
-
+    matrix.createRandomGraph(5,true,5);
+    matrix.print();
     return 0;
 }
 
