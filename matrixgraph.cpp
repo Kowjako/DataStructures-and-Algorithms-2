@@ -444,11 +444,12 @@ void MatrixGraph::createRandomGraph(int vertexNumber, bool isDirected, int edgeN
         connect(i,i + 1,rand()%30+1);
     }
     int i,j;
-    /*Nastepnie tworzymy do zadanej ilosci krawedzi */
+
+    /*Nastepnie tworzymy aby osiagnac zadana ilosc krawedzi */
     while(this->edge_num!=edgeNumber) {
-        i = rand()%vertexNumber; /*losowanie pozycji do wstawienia */
-        j = rand()%vertexNumber; /*losowanie pozycji do wstawienia */
-        if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia */
+        i = rand()%vertexNumber;
+        j = rand()%vertexNumber;
+        if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia oraz wierzcholek nie wskazuje na siebie*/
             connect(i,j,rand()%30+1);   /*polacz*/
         }
     }
