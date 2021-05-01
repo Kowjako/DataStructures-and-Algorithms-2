@@ -13,10 +13,10 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    listg.setDirected(true);
+    listg.setDirected(false);
     listg.readFromFile(tmp);
     listg.print();
-    listg.dijkstraAlg(0);
+    listg.primAlg();
     return 0;
 }
 

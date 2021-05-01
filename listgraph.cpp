@@ -364,5 +364,62 @@ void ListGraph::bellmanFordAlg(int start) {
     delete[] p;
 }
 
-void ListGraph::kruskalAlg() {
+void ListGraph::primAlg() {
+    bool* validated  = new bool[this->node_num];
+    int* neighbours = nullptr;
+    int* key = new int[this->node_num];
+    int* p = new int[this->node_num];
+    BinaryHeap bHeap;
+
+    for(int i=0;i<this->node_num;i++) {
+        key[i] = 10000;
+        validated[i] = false;
+    }
+    key[0] = 0;
+    p[0] = 10000;
+
+    /*Inicjalizacja kolejki priorytetowej*/
+    for(int i=0;i<this->node_num;i++)
+        bHeap.addItem(key[i]);
+
+    while(bHeap.sizeVar!=0) {
+        int u = 0;
+        int x = bHeap.deleteVertex();
+        /*Znalezenie numeru wierzcholka o najmniejszej wadze d[i]*/
+        for(int i=0;i<this->node_num;i++) {
+            if(key[i] == x && validated[i] == false)
+            u = i;
+        }
+
+        neighbours = countNeighbours(u);
+
+        for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
+            int v = neighbours[i];
+            if(bHeap.sizeVar!=0 && bHeap.findElement(0,key[v]) && getWeight(u,v) < key[v]) {
+                key[v] = getWeight(u,v);
+                p[v] = u;
+            }
+        }
+        validated[u] = true;
+        bHeap.deleteHeap();
+
+        for(int i=0;i<this->node_num;i++) {
+            if(validated[i]!=true)
+                bHeap.addItem(key[i]);
+        }
+    }
+
+    /*Koncowe wyswietlanie*/
+    int sum = 0;
+    for(int i=1;i<this->node_num;i++) {
+        cout<<"("<<p[i]<<";"<<i<<")"<<" -> "<<key[i]<<endl;
+        sum+=key[i];
+    }
+    cout<<"MST = "<<sum<<endl;
+
+    /*Zwolnienie pamieci */
+    delete[] validated;
+    delete[] neighbours;
+    delete[] key;
+    delete[] p;
 }

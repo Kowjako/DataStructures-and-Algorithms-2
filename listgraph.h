@@ -36,8 +36,8 @@ class ListGraph
         /** Algorytmy **/
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
-        void primAlg(int start);
-        void kruskalAlg(int start);
+        void primAlg();
+        void kruskalAlg();
 
         int getWeight(int start, int finish);
 
