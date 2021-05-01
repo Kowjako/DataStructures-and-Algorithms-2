@@ -192,7 +192,101 @@ void ListGraph::print() {
 }
 
 void ListGraph::dijkstraAlg(int start) {
+    BinaryHeap bheap; /*kolejka*/
+    int u = 0;  /*aktualnie sprawdzany wierzcholek */
 
+    bool* validated = new bool[this->node_num]; /*tablica sprawdzonych wierzcholkow*/
+    int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
+    int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
+    int* neighbours = nullptr; /* zbior sasiadow wierzcholka */
+
+    /* Poczatkowa inicjaliacja */
+    for(int i=0;i<this->node_num;i++) {
+        d[i] = 10000;
+        p[i] = 10000;
+        validated[i] = false;
+    }
+    d[start] = 0;
+
+    /*Inicjalizacja kolejki priorytetowej (kopiec-min) */
+    for(int i=0;i<this->node_num;i++)
+        bheap.addItem(d[i]);
+
+    while(bheap.sizeVar!=0) {
+        int u;
+        int x = bheap.deleteVertex(); /*Pobieramy najmniejsza wage*/
+        /*Znalezenie numeru wierzcholka o najmniejszej wadze d[i]*/
+        for(int i=0;i<this->node_num;i++) {
+            if(d[i] == x && validated[i] == false)
+            u = i;
+        }
+        /*szukamy liste indeksow sasiadow */
+        neighbours = countNeighbours(u);
+        for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
+            int v = neighbours[i];
+            if (d[v] > d[u] + getWeight(u,v)) {
+                d[v] = d[u] + getWeight(u,v); /* Relaksacja */
+                p[v] = u;
+            }
+        }
+        /*Oznaczamy wierzcholek jako sprawdzony */
+        validated[u] = true;
+        bheap.deleteHeap();
+
+        /*Tworzymy kolejke na podstawie korektowanych drog */
+        for(int i=0;i<this->node_num;i++) {
+            if(validated[i]!=true)
+                bheap.addItem(d[i]);
+        }
+    }
+
+    /* Wyswietlenie wyniku z wykorzystaniem stosu*/
+    stack<int> roads;
+    /*cout<<"Start = "<<start<<endl;
+    for(int i = 1;i<this->node_num;i++) {
+        cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
+        int address = i;
+        roads.push(i);
+        while(p[address]!=10000) {
+            roads.push(p[address]);
+            address = p[address];
+        }
+        while(!roads.empty()) {
+            if(roads.size()==1)
+                cout<<roads.top()<<"";
+            else
+                cout<<roads.top()<<"->";
+            roads.pop();
+        }
+        cout<<endl;
+    } */
+    /* Zwolnienie pamieci */
+//    delete[] validated;
+  //  delete[] p;
+   // delete[] d;
+   // delete[] neighbours;
+}
+
+int* ListGraph::countNeighbours(int index) {
+    int neigboursCount = 0;
+    node* start = head[index];
+    /*Obliczamy ile ma sasiadow */
+    while(start!=nullptr) {
+        neigboursCount++;
+        start = start->next;
+    }
+    /*Ustawiamy ilosc sasiadow */
+    this->neighbourCount = neigboursCount;
+
+    /*Tworzymy liste indeksow sasiadow */
+    int* neigbourArray = new int[neigboursCount];
+    /*Zwracamy wskaznik na poczatek */
+    start = head[index];
+    for(int i=0;i<neigboursCount;i++) {
+        neigbourArray[i] = start->value;
+        start = start->next;
+    }
+    return neigbourArray;
 }
 
 

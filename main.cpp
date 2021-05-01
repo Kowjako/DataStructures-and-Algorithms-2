@@ -13,12 +13,9 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    matrix.setDirected(false);
-    matrix.readFromFile(tmp);
-    matrix.print();
-    matrix.kruskalAlg();
-
-
+    listg.setDirected(true);
+    listg.readFromFile(tmp);
+    listg.print();
 
     return 0;
 }

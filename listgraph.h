@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "binaryheap.h"
+#include <stack>
 
 using namespace std;
 
@@ -22,8 +23,6 @@ class ListGraph
 
         bool connect(int startVertex, int endVertex, int weight);
         bool disconnect(int startVertex, int endVertex);
-        //bool forceConnect(int startVertex, int endVertex, int cost);
-        //bool forceDisconnect(int startVertex, int endVertex);
 
         void add();
         void print();
@@ -43,10 +42,9 @@ class ListGraph
         void kruskalAlg(int start);
 
         node** getHead();
-        int edgeWeight(node* startNode, node* finishNode);
-        void copyG(int **macierz, int n, bool isDirected);
+        int* countNeighbours(int index);
+
         void clear();
-        void printPaths(int start);
 
         virtual ~ListGraph();
 
@@ -57,6 +55,7 @@ class ListGraph
         bool directed;
         int node_num;
         int edge_num;
+        int neighbourCount;
 };
 
 #endif // LISTGRAPH_H
