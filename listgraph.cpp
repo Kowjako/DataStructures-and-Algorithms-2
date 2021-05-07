@@ -509,8 +509,16 @@ void ListGraph::createRandomGraph(int vertexNumber, bool direction, int edgeNumb
         return;
     }
     /* Usuniecie poprzedniego gdy istnial i inicjowanie nowego */
-    /** TO DO **/
-    clear(vertexNumber,isDirected);
+    clear();
+    /* Inicjowanie zmiennych poczatkowych */
+    this->node_num = vertexNumber;
+    this->directed = direction;
+    this->edge_num = 0;
+
+    this->head = new node*[vertexNumber];
+    for(int i=0;i<this->node_num;i++) {
+        head[i] = nullptr;
+    }
 
     int maxEdgeNumber = (vertexNumber * vertexNumber - vertexNumber) / 2; /* graf pelny */
     /* Tworzenie grafu minimalnego = spojnego */
@@ -522,7 +530,7 @@ void ListGraph::createRandomGraph(int vertexNumber, bool direction, int edgeNumb
     while(this->edge_num!=edgeNumber) {
         i = rand()%vertexNumber;
         j = rand()%vertexNumber;
-        if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia oraz wierzcholek nie wskazuje na siebie*/
+        if(getWeight(i,j)==0 && i!=j) {    /*jezeli nie ma polaczenia oraz wierzcholek nie wskazuje na siebie*/
             connect(i,j,rand()%30+1);   /*polacz*/
         }
     }

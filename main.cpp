@@ -13,8 +13,10 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    listg.createRandomGraph(5,true,10);
+    listg.createRandomGraph(20,true,40);
     listg.print();
+    cout<<listg.getEdgeNumber()<<endl;
+    cout<<listg.getNodeNumber()<<endl;
     return 0;
 }
 
