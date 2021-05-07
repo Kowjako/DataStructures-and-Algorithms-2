@@ -37,6 +37,8 @@ class ListGraph
         int getNodeNumber();
         int getEdgeNumber();
 
+        void createRandomGraph(int vertexNumber,bool direction, int edgeNumber);
+
         void readFromFile(string filename);
 
         /** Algorytmy **/
