@@ -13,9 +13,8 @@ int main()
     string tmp;
     cout<<"Wprowadz plik"<<endl;;
     cin>>tmp;
-    matrix.createRandomGraph(5,true,10);
-    matrix.print();
-    matrix.dijkstraAlg(0);
+    listg.createRandomGraph(5,true,10);
+    listg.print();
     return 0;
 }
 
