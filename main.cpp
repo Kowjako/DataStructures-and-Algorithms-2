@@ -24,7 +24,10 @@ int main()
 
     /* Nie zapominac o setDirect dla algorytmow MST oraz sciezki */
 
-    matrix.createRandomGraph(5, false, 10);
+    //matrix.createRandomGraph(5, false, 10);
+
+    matrix.createRandomGraph(5,false,10);
+
     matrix.print();
     matrix.kruskalAlg();
     /* double sum = 0;

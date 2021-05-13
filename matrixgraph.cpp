@@ -137,13 +137,12 @@ bool MatrixGraph::readFromFile(string filename) {
     int edgeNum, nodeNum;
     file>>edgeNum; /*wczytanie liczby krawedzi */
     file>>nodeNum; /*wczytanie liczby wierzcholkow */
-
-    this->edgeMacierz = new int*[edgeNum]; /*tworzenie listy krawedzi potrzebnej do algroytmow */
-
     string str;
     getline(file, str);
 
     clear(nodeNum, this->directed);
+
+    this->edgeMacierz = new int*[edgeNum]; /*tworzenie listy krawedzi potrzebnej do algroytmow */
 
     int start, finish, weight;
     for(int i=0;i<edgeNum;i++) {
