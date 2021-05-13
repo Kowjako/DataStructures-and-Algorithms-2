@@ -2,21 +2,41 @@
 #include <matrixgraph.h>
 #include <listgraph.h>
 #include <binaryheap.h>
+#include <windows.h>
+#include <iomanip>
+
 using namespace std;
+
+long long int read_QPC()
+{
+    LARGE_INTEGER count;
+    QueryPerformanceCounter(&count);
+    return((long long int)count.QuadPart);
+}
 
 MatrixGraph matrix;
 ListGraph listg;
-BinaryHeap b;
+
 int main()
 {
+    long long int frequency, start, elapsed;
+    QueryPerformanceFrequency((LARGE_INTEGER *)&frequency);
+
     /* Nie zapominac o setDirect dla algorytmow MST oraz sciezki */
-    string tmp;
-    cout<<"Wprowadz plik"<<endl;;
-    cin>>tmp;
-    listg.createRandomGraph(20,true,40);
-    listg.print();
-    cout<<listg.getEdgeNumber()<<endl;
-    cout<<listg.getNodeNumber()<<endl;
+
+    matrix.createRandomGraph(5, false, 10);
+    matrix.print();
+    matrix.kruskalAlg();
+    /* double sum = 0;
+    for(int i=0;i<50;i++) {
+        matrix.createRandomGraph(50, false, 306);
+
+        start = read_QPC();
+        matrix.kruskalAlg();
+        elapsed = read_QPC() - start;
+        sum+= elapsed;
+    }
+    cout << "Time [us] = "<< (1000000.0 * sum) /(frequency*50) << endl; */
     return 0;
 }
 

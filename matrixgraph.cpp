@@ -115,8 +115,13 @@ void MatrixGraph::clear(int nodeNumber, bool isDirected) {
         delete[] this->macierz[i];
     delete[] this->macierz;
 
+    for(int i=0;i<this->node_num ;i++)
+        delete[] this->edgeMacierz[i];
+    delete[] this->edgeMacierz;
+
     /* Inicjalizacja nowego */
     this->node_num = nodeNumber;
+    this->edge_num = 0;
     this->directed = isDirected;
     this->macierz = new int*[this->node_num];
 
@@ -326,6 +331,7 @@ void MatrixGraph::primAlg() {
                 p[v] = u;
             }
         }
+
         validated[u] = true;
         bHeap.deleteHeap();
 
@@ -336,12 +342,12 @@ void MatrixGraph::primAlg() {
     }
 
     /*Koncowe wyswietlanie*/
-    int sum = 0;
+    /** int sum = 0;
     for(int i=1;i<this->node_num;i++) {
         cout<<"("<<p[i]<<";"<<i<<")"<<" -> "<<key[i]<<endl;
         sum+=key[i];
     }
-    cout<<"MST = "<<sum<<endl;
+    cout<<"MST = "<<sum<<endl; **/
 
     /*Zwolnienie pamieci */
     delete[] validated;
@@ -377,14 +383,14 @@ void MatrixGraph::kruskalAlg() {
         }
     }
     /*Wyswietlenie wyniku*/
-    int sum = 0;
+    /** int sum = 0;
     for(int i=0;i<this->edge_num;i++) {
         if(isEdgeMakeSolution[i]) {
             cout<<"("<<edges[i]->start<<";"<<edges[i]->finish<<")"<<" -> "<<edges[i]->weight<<endl;
             sum+=edges[i]->weight;
         }
     }
-    cout<<"MST = "<<sum<<endl;
+    cout<<"MST = "<<sum<<endl; **/
     /*Zwolnienie pamieci*/
     delete[] isEdgeMakeSolution;
     delete[] grupa;
@@ -428,26 +434,41 @@ edge** MatrixGraph::createSortedEdgesList() {
 }
 
 void MatrixGraph::createRandomGraph(int vertexNumber, bool isDirected, int edgeNumber) {
+    /* Usuniecie poprzedniego gdy istnial i inicjowanie nowego */
+    clear(vertexNumber,isDirected);
+
+    /*Tworzenie listy krawedzi dla alg. Kruskala */
+    this->edgeMacierz = new int*[edgeNumber];
+
     /* Maks. ilosc krawedzi to graf pelny wynosi n*(n-1)/2 a minimalna to n-1*/
     if(edgeNumber>(vertexNumber)*(vertexNumber-1)*0.5 || edgeNumber<vertexNumber-1 && !isDirected) {
         cout<<"Nie moze byc tyle krawedzi!"<<endl;
         return;
     }
-    /* Usuniecie poprzedniego gdy istnial i inicjowanie nowego */
-    clear(vertexNumber,isDirected);
 
     int maxEdgeNumber = (vertexNumber * vertexNumber - vertexNumber) / 2; /* graf pelny */
+    int edgeCounter = 0;
+
     /* Tworzenie grafu minimalnego = spojnego */
     for (int i=0; i<this->node_num-1;i++) { /* minimalna ilosc krawedzi = n - 1 aby graf byl spojny */
-        connect(i,i + 1,rand()%30+1);
+        connect(i,i + 1,rand()%100+1);
+        this->edgeMacierz[edgeCounter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+        this->edgeMacierz[edgeCounter][0] = i;
+        this->edgeMacierz[edgeCounter][1] = i+1;
+        edgeCounter++;
     }
+
     int i,j;
     /*Nastepnie tworzymy aby osiagnac zadana ilosc krawedzi */
     while(this->edge_num!=edgeNumber) {
         i = rand()%vertexNumber;
         j = rand()%vertexNumber;
         if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia oraz wierzcholek nie wskazuje na siebie*/
-            connect(i,j,rand()%30+1);   /*polacz*/
+            connect(i,j,rand()%100+1);   /*polacz*/
+            this->edgeMacierz[edgeCounter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+            this->edgeMacierz[edgeCounter][0] = i;
+            this->edgeMacierz[edgeCounter][1] = j;
+            edgeCounter++;
         }
     }
 }
