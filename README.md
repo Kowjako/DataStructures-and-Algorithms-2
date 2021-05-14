@@ -16,4 +16,5 @@ Zaimplementowane algorytmy grafowe dla następujących problemów:
 - Utworzenie randomowego grafu na podstawie liczby wierzchołków oraz krawędzi.
 ## Uwagi 💔
 Algorytmy zaimplementowane bez użycia biblioteki STL  
+  
 ![ss](https://media.giphy.com/media/l3xxTjIXYy3gchiH3L/giphy.gif)
