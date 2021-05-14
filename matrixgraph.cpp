@@ -154,12 +154,12 @@ bool MatrixGraph::readFromFile(string filename) {
         this->edgeMacierz[i][0] = start;
         this->edgeMacierz[i][1] = finish;
     }
-
     /** Wypisanie listy krawedzi - Opcjonalnie **/
     /* for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
         cout<<endl;
     } */
+    return true;
 }
 
 void MatrixGraph::dijkstraAlg(int start) {
@@ -171,10 +171,10 @@ void MatrixGraph::dijkstraAlg(int start) {
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
     int* neighbours = nullptr; /* zbior sasiadow wierzcholka */
 
-    /* Poczatkowa inicjaliacja */
+    /* Poczatkowa inicjalizacja */
     for(int i=0;i<this->node_num;i++) {
-        d[i] = 10000;
-        p[i] = 10000;
+        d[i] = INT_MAX;
+        p[i] = INT_MAX;
         validated[i] = false;
     }
     d[start] = 0;
@@ -211,14 +211,14 @@ void MatrixGraph::dijkstraAlg(int start) {
         }
     }
 
-    /* Wyswietlenie wyniku z wykorzystaniem stosu*/
+    /** Wyswietlenie wyniku z wykorzystaniem stosu **/
     stack<int> roads;
     cout<<"Start = "<<start<<endl;
     for(int i = 1;i<this->node_num;i++) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
         int address = i;
         roads.push(i);
-        while(p[address]!=10000) {
+        while(p[address]!=INT_MAX) {
             roads.push(p[address]);
             address = p[address];
         }
@@ -244,8 +244,8 @@ void MatrixGraph::bellmanFordAlg(int start) {
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
     for(int i=0;i<this->node_num;i++) {
-        d[i] = 10000;
-        p[i] = 10000;
+        d[i] = INT_MAX-100;
+        p[i] = INT_MAX;
     }
     d[start] = 0;
 
@@ -254,6 +254,7 @@ void MatrixGraph::bellmanFordAlg(int start) {
             edge = this->edgeMacierz[counter];
             if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
                 d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
+                if(edge[1]==0) continue;
                 p[edge[1]] = edge[0];
             }
             counter++;
@@ -275,7 +276,7 @@ void MatrixGraph::bellmanFordAlg(int start) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
         int address = i;
         roads.push(i);
-        while(p[address]!=10000) {
+        while(p[address]!=INT_MAX) {
             roads.push(p[address]);
             address = p[address];
         }
@@ -302,11 +303,11 @@ void MatrixGraph::primAlg() {
     BinaryHeap bHeap;
 
     for(int i=0;i<this->node_num;i++) {
-        key[i] = 10000;
+        key[i] = INT_MAX;
         validated[i] = false;
     }
     key[0] = 0;
-    p[0] = 10000;
+    p[0] = INT_MAX;
 
     /*Inicjalizacja kolejki priorytetowej*/
     for(int i=0;i<this->node_num;i++)
@@ -323,7 +324,7 @@ void MatrixGraph::primAlg() {
 
         neighbours = countNeighbours(u);
 
-        for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
+        for(int i = 0; i<this->neighbourCount;i++) { /*Sprawdzamy droge do kazdego */
             int v = neighbours[i];
             if(bHeap.sizeVar!=0 && bHeap.findElement(0,key[v]) && getWeight(u,v) < key[v]) {
                 key[v] = getWeight(u,v);
@@ -355,7 +356,7 @@ void MatrixGraph::primAlg() {
     delete[] p;
 }
 
-void MatrixGraph::kruskalAlg() {
+void MatrixGraph::kruskalAlg(edge** sortedEdges) {
     bool* isEdgeMakeSolution = new bool[this->edge_num];
     for(int i=0;i<this->edge_num;i++) {
         isEdgeMakeSolution[i] = false;
@@ -364,8 +365,7 @@ void MatrixGraph::kruskalAlg() {
     edge* actualEdge = nullptr;
 
     /*Tworzenie posortowanej listy krawedzi*/
-    edge** edges = createSortedEdgesList();
-
+    edge** edges = sortedEdges;
     /* Tworzenie poddrzew */
     for(int i=0;i<this->node_num;i++) {
         grupa[i] = i;
@@ -382,14 +382,14 @@ void MatrixGraph::kruskalAlg() {
         }
     }
     /*Wyswietlenie wyniku*/
-    /** int sum = 0;
+    int sum = 0;
     for(int i=0;i<this->edge_num;i++) {
         if(isEdgeMakeSolution[i]) {
             cout<<"("<<edges[i]->start<<";"<<edges[i]->finish<<")"<<" -> "<<edges[i]->weight<<endl;
             sum+=edges[i]->weight;
         }
     }
-    cout<<"MST = "<<sum<<endl; **/
+    cout<<"MST = "<<sum<<endl;
     /*Zwolnienie pamieci*/
     delete[] isEdgeMakeSolution;
     delete[] grupa;
@@ -450,7 +450,7 @@ void MatrixGraph::createRandomGraph(int vertexNumber, bool isDirected, int edgeN
 
     /* Tworzenie grafu minimalnego = spojnego */
     for (int i=0; i<this->node_num-1;i++) { /* minimalna ilosc krawedzi = n - 1 aby graf byl spojny */
-        connect(i,i + 1,rand()%100+1);
+        connect(i,i + 1,rand()%(INT_MAX-200));
         this->edgeMacierz[edgeCounter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
         this->edgeMacierz[edgeCounter][0] = i;
         this->edgeMacierz[edgeCounter][1] = i+1;
@@ -463,7 +463,7 @@ void MatrixGraph::createRandomGraph(int vertexNumber, bool isDirected, int edgeN
         i = rand()%vertexNumber;
         j = rand()%vertexNumber;
         if(this->macierz[i][j]==0 && i!=j) {    /*jezeli nie ma polaczenia oraz wierzcholek nie wskazuje na siebie*/
-            connect(i,j,rand()%100+1);   /*polacz*/
+            connect(i,j,rand()%(INT_MAX-200));   /*polacz*/
             this->edgeMacierz[edgeCounter] = new int[2]; /*tworzymy miejsce na jedna krawedz */
             this->edgeMacierz[edgeCounter][0] = i;
             this->edgeMacierz[edgeCounter][1] = j;
