@@ -45,7 +45,7 @@ class ListGraph
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
         void primAlg();
-        void kruskalAlg();
+        void kruskalAlg(listEdge** sortedEdges);
 
         int getWeight(int start, int finish);
         listEdge** createSortedEdgesList();
