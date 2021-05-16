@@ -64,6 +64,7 @@ void ListGraph::readFromFile(string filename) {
     string str;
     getline(file, str);
 
+    clear();
     this->edgeMacierz = new int*[edgeNum];
 
     this->node_num = nodeNum;
@@ -82,6 +83,8 @@ void ListGraph::readFromFile(string filename) {
         this->edgeMacierz[i][0] = start;
         this->edgeMacierz[i][1] = finish;
     }
+
+    cout<<"Edge num = "<<getEdgeNumber()<<endl;
 }
 
 bool ListGraph::connect(int start, int finish, int weight) {
@@ -321,7 +324,6 @@ void ListGraph::bellmanFordAlg(int start) {
         p[i] = INT_MAX;
     }
     d[start] = 0;
-
     for(int i=0;i<this->node_num-1;i++) {
         for(int j=0;j<getEdgeNumber();j++) {
             edge = this->edgeMacierz[counter];
@@ -340,7 +342,6 @@ void ListGraph::bellmanFordAlg(int start) {
             return;
         }
     }
-
     /*Wyswietlanie wyniku*/
     stack<int> roads;
     cout<<"Start = "<<start<<endl;
