@@ -14,6 +14,8 @@ Zaimplementowane algorytmy grafowe dla następujących problemów:
 ## Dodatkowe funkcje
 - Wczytanie grafu z pliku o strukturze (pierwsza linijka, ilość krawedzi, ilość wierzchołków, kolejne linijki reprezentują krawedź: początek, koniec, waga).
 - Utworzenie randomowego grafu na podstawie liczby wierzchołków oraz krawędzi.
+## Badanie złożoności czasowej dla realizowanych funkcji 📝
+W gąłęzi ***Raport*** jak zawsze można znaleźć raport gdzie przedstawiono załeżności czasowe dla każdej struktury w zależności od wykonywanej operacji :)  
 ## Uwagi 💔
 Algorytmy zaimplementowane bez użycia biblioteki STL  
   
