@@ -4,7 +4,6 @@
 #include "binaryheap.h"
 #include <windows.h>
 #include <iomanip>
-
 using namespace std;
 
 /** Inicjalizacja obiektow do pracy **/
