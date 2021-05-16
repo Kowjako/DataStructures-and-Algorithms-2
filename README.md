@@ -9,8 +9,8 @@ Zaimplementowane algorytmy grafowe dla następujących problemów:
 - Algorytm Dijkstry  
 - Algorytm Bellmana — Forda    
 ## Sposoby reprezentacji grafu w pamięci komputera  
-- Reprezentacja w postaći macierzy sąsiedztwa
-- Reprezentacja w postaći listy sąsiadów
+- Reprezentacja w postaci macierzy sąsiedztwa
+- Reprezentacja w postaci listy sąsiadów
 ## Dodatkowe funkcje
 - Wczytanie grafu z pliku o strukturze (pierwsza linijka, ilość krawedzi, ilość wierzchołków, kolejne linijki reprezentują krawedź: początek, koniec, waga).
 - Utworzenie randomowego grafu na podstawie liczby wierzchołków oraz krawędzi.
