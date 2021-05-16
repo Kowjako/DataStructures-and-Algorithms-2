@@ -68,14 +68,14 @@ void workWithMatrixGraph() {
                     matrix.bellmanFordAlg(0);
                 break;
             case 6:
-                if(listg.getHead())
-                    listg.print();
+                if(matrix.getMacierz())
+                    matrix.print();
                 else cout<<"Nie wprowadzono grafu"<<endl;
                 break;
             default:
                 break;
         }
-    } while(operationNumber!=9);
+    } while(operationNumber!=7);
 }
 
 void workWithListGraph() {
@@ -129,7 +129,7 @@ void workWithListGraph() {
             default:
                 break;
         }
-    } while(operationNumber!=9);
+    } while(operationNumber!=7);
 }
 
 
