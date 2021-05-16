@@ -252,7 +252,7 @@ void ListGraph::dijkstraAlg(int start) {
     }
 
     /* Wyswietlenie wyniku z wykorzystaniem stosu*/
-    /* stack<int> roads;
+     stack<int> roads;
     cout<<"Start = "<<start<<endl;
     for(int i = 1;i<this->node_num;i++) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
@@ -270,7 +270,7 @@ void ListGraph::dijkstraAlg(int start) {
             roads.pop();
         }
         cout<<endl;
-    } */
+    }
     /* Zwolnienie pamieci */
     delete[] validated;
     delete[] p;
@@ -342,19 +342,19 @@ void ListGraph::bellmanFordAlg(int start) {
     }
 
     /*Wyswietlanie wyniku*/
-   /** stack<int> roads;
+    stack<int> roads;
     cout<<"Start = "<<start<<endl;
     for(int i = 1;i<this->node_num;i++) {
         cout<<"To: "<<i<<" Dist: "<<d[i]<<" Path: ";
         int address = i;
         roads.push(i);
         /*Odkladamy na stosie az do poczatkowego bo poprzednik poczatkowego to 10000*/
-   /*     while(p[address]!=INT_MAX) {
+        while(p[address]!=INT_MAX) {
             roads.push(p[address]);
             address = p[address];
         }
         /*Pobieramy ze stosu i wyswietlamy */
-   /*     while(!roads.empty()) {
+        while(!roads.empty()) {
             if(roads.size()==1)
                 cout<<roads.top()<<"";
             else
@@ -362,7 +362,7 @@ void ListGraph::bellmanFordAlg(int start) {
             roads.pop();
         }
         cout<<endl;
-    }  */
+    }
     /*Zwolnienie pamieci */
     delete edge;
     delete[] d;
@@ -415,12 +415,12 @@ void ListGraph::primAlg() {
     }
 
     /** Koncowe wyswietlanie **/
-    /* int sum = 0;
+    int sum = 0;
     for(int i=1;i<this->node_num;i++) {
         cout<<"("<<p[i]<<";"<<i<<")"<<" -> "<<key[i]<<endl;
         sum+=key[i];
     }
-    cout<<"MST = "<<sum<<endl; */
+    cout<<"MST = "<<sum<<endl;
 
     /*Zwolnienie pamieci */
     delete[] validated;
@@ -429,7 +429,7 @@ void ListGraph::primAlg() {
     delete[] p;
 }
 
-void ListGraph::kruskalAlg(listEdge** sortedEdges) {
+void ListGraph::kruskalAlg() {
     bool* isEdgeMakeSolution = new bool[this->edge_num];
     for(int i=0;i<this->edge_num;i++) {
         isEdgeMakeSolution[i] = false;
@@ -438,7 +438,7 @@ void ListGraph::kruskalAlg(listEdge** sortedEdges) {
     listEdge* actualEdge = nullptr;
 
     /*Tworzenie posortowanej listy krawedzi*/
-    listEdge** edges = sortedEdges;
+    listEdge** edges = createSortedEdgesList();
 
     /* Tworzenie poddrzew */
     for(int i=0;i<this->node_num;i++) {
@@ -455,15 +455,15 @@ void ListGraph::kruskalAlg(listEdge** sortedEdges) {
             }
         }
     }
-    /*Wyswietlenie wyniku*/
-    /* int sum = 0;
+    /** Wyswietlenie wyniku **/
+    int sum = 0;
     for(int i=0;i<this->edge_num;i++) {
         if(isEdgeMakeSolution[i]) {
             cout<<"("<<edges[i]->start<<";"<<edges[i]->finish<<")"<<" -> "<<edges[i]->weight<<endl;
             sum+=edges[i]->weight;
         }
     }
-    cout<<"MST = "<<sum<<endl; */
+    cout<<"MST = "<<sum<<endl;
     /*Zwolnienie pamieci*/
     delete[] isEdgeMakeSolution;
     delete[] grupa;
