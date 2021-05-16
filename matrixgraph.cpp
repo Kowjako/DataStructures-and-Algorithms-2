@@ -6,9 +6,7 @@ MatrixGraph::MatrixGraph() {
 }
 
 MatrixGraph::~MatrixGraph() {
-    for(int i=0;i<this->node_num ;i++)
-        delete[] this->macierz[i];
-    delete[] this->macierz;
+    clear(0, false);
 }
 
 MatrixGraph::MatrixGraph(int vertexNumber, bool isDirected) : node_num(vertexNumber), directed(isDirected) {

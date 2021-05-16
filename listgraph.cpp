@@ -1,7 +1,7 @@
 #include "listgraph.h"
 
 ListGraph::~ListGraph() {
-    //dtor
+    clear();
 }
 
 ListGraph::ListGraph() {
