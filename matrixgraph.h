@@ -36,7 +36,7 @@ class MatrixGraph
         void dijkstraAlg(int start);
         void bellmanFordAlg(int start);
         void primAlg();
-        void kruskalAlg(edge** sortedEdges);
+        void kruskalAlg();
 
         void createRandomGraph(int vertexNumber,bool direction, int edgeNumber);
 

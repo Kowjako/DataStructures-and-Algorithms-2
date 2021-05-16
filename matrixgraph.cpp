@@ -356,7 +356,7 @@ void MatrixGraph::primAlg() {
     delete[] p;
 }
 
-void MatrixGraph::kruskalAlg(edge** sortedEdges) {
+void MatrixGraph::kruskalAlg() {
     bool* isEdgeMakeSolution = new bool[this->edge_num];
     for(int i=0;i<this->edge_num;i++) {
         isEdgeMakeSolution[i] = false;
@@ -365,7 +365,7 @@ void MatrixGraph::kruskalAlg(edge** sortedEdges) {
     edge* actualEdge = nullptr;
 
     /*Tworzenie posortowanej listy krawedzi*/
-    edge** edges = sortedEdges;
+    edge** edges = createSortedEdgesList();
     /* Tworzenie poddrzew */
     for(int i=0;i<this->node_num;i++) {
         grupa[i] = i;
