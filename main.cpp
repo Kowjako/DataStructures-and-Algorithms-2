@@ -49,10 +49,14 @@ void workWithListGraph() {
                 listg.readFromFile(tmpLocation);
                 break;
             case 2:
-                listg.primAlg();
+                if(isDirected) cout<<"Graf musi byc nieskierowanym"<<endl;
+                else
+                    listg.primAlg();
                 break;
             case 3:
-                listg.kruskalAlg();
+                if(isDirected) cout<<"Graf musi byc nieskierowanym"<<endl;
+                else
+                    listg.kruskalAlg();
                 break;
             case 4:
                 if(!isDirected) cout<<"Graf musi byc skierowanym"<<endl;
@@ -65,12 +69,13 @@ void workWithListGraph() {
                     listg.bellmanFordAlg(0);
                 break;
             case 6:
-                listg.print();
+                if(listg.getHead())
+                    listg.print();
+                else cout<<"Nie wprowadzono grafu"<<endl;
                 break;
             default:
                 break;
         }
-
     } while(operationNumber!=9);
 }
 
