@@ -152,7 +152,6 @@ int main()
         }
     }
     while(structNumber!=3);
-
     return 0;
 }
 

@@ -132,31 +132,41 @@ void MatrixGraph::clear(int nodeNumber, bool isDirected) {
 
 bool MatrixGraph::readFromFile(string filename) {
     ifstream file(filename);
-    int edgeNum, nodeNum;
-    file>>edgeNum; /*wczytanie liczby krawedzi */
-    file>>nodeNum; /*wczytanie liczby wierzcholkow */
-    string str;
-    getline(file, str);
+    if(file.is_open()) {
+        int edgeNum, nodeNum;
+        file>>edgeNum; /*wczytanie liczby krawedzi */
+        file>>nodeNum; /*wczytanie liczby wierzcholkow */
 
-    clear(nodeNum, this->directed);
+        if(file.fail()) {
+            cout<<"Blad podczas odczytywania poczatkowych wartosci"<<endl;
+            return false;
+        }
 
-    this->edgeMacierz = new int*[edgeNum]; /*tworzenie listy krawedzi potrzebnej do algroytmow */
+        string str;
+        getline(file, str);
 
-    int start, finish, weight;
-    for(int i=0;i<edgeNum;i++) {
-        file>>start;
-        file>>finish;
-        file>>weight;
-        connect(start,finish, weight);
-        this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
-        this->edgeMacierz[i][0] = start;
-        this->edgeMacierz[i][1] = finish;
-    }
+        clear(nodeNum, this->directed);
+
+        this->edgeMacierz = new int*[edgeNum]; /*tworzenie listy krawedzi potrzebnej do algroytmow */
+
+        int start, finish, weight;
+        for(int i=0;i<edgeNum;i++) {
+            file>>start;
+            file>>finish;
+            file>>weight;
+            if(file.fail()) cout<<"Blad podczas odczytywania krawedzi"<<endl;
+            connect(start,finish, weight);
+            this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+            this->edgeMacierz[i][0] = start;
+            this->edgeMacierz[i][1] = finish;
+        }
     /** Wypisanie listy krawedzi - Opcjonalnie **/
     /* for(int i=0;i<getEdgeNumber();i++) {
         cout<<"("<<this->edgeMacierz[i][0]<<", "<<this->edgeMacierz[i][1]<<")";
         cout<<endl;
     } */
+    }
+    else cout<<"Blad podczas otwierania pliku"<<endl;
     return true;
 }
 
@@ -164,6 +174,7 @@ void MatrixGraph::dijkstraAlg(int start) {
     BinaryHeap bheap; /*kolejka*/
     int u = 0;  /*aktualnie sprawdzany wierzcholek */
 
+    int* edge = new int[2];
     bool* validated = new bool[this->node_num]; /*tablica sprawdzonych wierzcholkow*/
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
@@ -180,6 +191,15 @@ void MatrixGraph::dijkstraAlg(int start) {
     /*Inicjalizacja kolejki priorytetowej (kopiec-min) */
     for(int i=0;i<this->node_num;i++)
         bheap.addItem(d[i]);
+
+    /* Sprawdzenie wag ujemnych */
+    for(int i=0;i<this->edge_num;i++) {
+        edge = this->edgeMacierz[i];
+        if(getWeight(edge[0],edge[1])<0) {
+            cout<<"Istnieja wagi ujemne, algorytm Dijkstry nie moze byc wykonany"<<endl;
+            return;
+        }
+    }
 
     while(bheap.sizeVar!=0) {
         int u;
@@ -234,6 +254,7 @@ void MatrixGraph::dijkstraAlg(int start) {
     delete[] p;
     delete[] d;
     delete[] neighbours;
+    delete edge;
 }
 
 void MatrixGraph::bellmanFordAlg(int start) {

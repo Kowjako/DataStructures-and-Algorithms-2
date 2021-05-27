@@ -57,34 +57,41 @@ void ListGraph::clear() {
 
 void ListGraph::readFromFile(string filename) {
     ifstream file(filename);
-    int edgeNum, nodeNum;
-    file>>edgeNum; /*wczytanie liczby krawedzi */
-    file>>nodeNum; /*wczytanie liczby wierzcholkow */
+    if(file.is_open()) {
+        int edgeNum, nodeNum;
+        file>>edgeNum; /*wczytanie liczby krawedzi */
+        file>>nodeNum; /*wczytanie liczby wierzcholkow */
 
-    string str;
-    getline(file, str);
+        if(file.fail()) {
+            cout << "Blad odczytywania poczatkowych wartosci" << endl;
+            return;
+        }
 
-    clear();
-    this->edgeMacierz = new int*[edgeNum];
+        string str;
+        getline(file, str);
 
-    this->node_num = nodeNum;
-    this->head = new node*[node_num];
-    for(int i=0;i<this->node_num;i++) {
-        head[i] = nullptr;
+        clear();
+        this->edgeMacierz = new int*[edgeNum];
+
+        this->node_num = nodeNum;
+        this->head = new node*[node_num];
+        for(int i=0;i<this->node_num;i++) {
+            head[i] = nullptr;
+        }
+
+        int start, finish, weight;
+        for(int i=0;i<edgeNum;i++) {
+            file>>start;
+            file>>finish;
+            file>>weight;
+            if(file.fail()) cout<<"Blad podczas odczytywania krawedzi"<<endl;
+            connect(start,finish, weight);
+            this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
+            this->edgeMacierz[i][0] = start;
+            this->edgeMacierz[i][1] = finish;
+        }
     }
-
-    int start, finish, weight;
-    for(int i=0;i<edgeNum;i++) {
-        file>>start;
-        file>>finish;
-        file>>weight;
-        connect(start,finish, weight);
-        this->edgeMacierz[i] = new int[2]; /*tworzymy miejsce na jedna krawedz */
-        this->edgeMacierz[i][0] = start;
-        this->edgeMacierz[i][1] = finish;
-    }
-
-    cout<<"Edge num = "<<getEdgeNumber()<<endl;
+    else cout<<"Blad podczas otwierania pliku"<<endl;
 }
 
 bool ListGraph::connect(int start, int finish, int weight) {
@@ -209,6 +216,7 @@ void ListGraph::dijkstraAlg(int start) {
     BinaryHeap bheap; /*kolejka*/
     int u = 0;  /*aktualnie sprawdzany wierzcholek */
 
+    int* edge = new int[2];
     bool* validated = new bool[this->node_num]; /*tablica sprawdzonych wierzcholkow*/
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
@@ -221,6 +229,15 @@ void ListGraph::dijkstraAlg(int start) {
         validated[i] = false;
     }
     d[start] = 0;
+
+    /* Sprawdzenie ujemnych wag */
+    for(int i=0;i<this->edge_num;i++) {
+        edge = this->edgeMacierz[i];
+        if(getWeight(edge[0],edge[1])<0) {
+            cout<<"Istnieja wagi ujemne, algorytm Dijkstry nie moze byc wykonany"<<endl;
+            return;
+        }
+    }
 
     /*Inicjalizacja kolejki priorytetowej (kopiec-min) */
     for(int i=0;i<this->node_num;i++)
@@ -279,6 +296,7 @@ void ListGraph::dijkstraAlg(int start) {
     delete[] p;
     delete[] d;
     delete[] neighbours;
+    delete edge;
 }
 
 int* ListGraph::countNeighbours(int index) {
