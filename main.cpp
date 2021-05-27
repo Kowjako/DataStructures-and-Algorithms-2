@@ -99,6 +99,7 @@ void workWithListGraph() {
                 else
                     listg.setDirected(false);
                 listg.readFromFile(tmpLocation);
+                listg.print();
                 break;
             case 2:
                 if(isDirected) cout<<"Graf musi byc nieskierowanym"<<endl;

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1622119865 source:d:\codeblocks\projekt\projektnr2\main.cpp
+1622139980 source:d:\codeblocks\projekt\projektnr2\main.cpp
 	<iostream>
 	"matrixgraph.h"
 	"listgraph.h"
@@ -7,7 +7,7 @@
 	<windows.h>
 	<iomanip>
 
-1622138931 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
+1622141654 source:d:\codeblocks\projekt\projektnr2\listgraph.cpp
 	"listgraph.h"
 
 1621200116 d:\codeblocks\projekt\projektnr2\listgraph.h
@@ -17,7 +17,7 @@
 	<stack>
 	"matrixgraph.h"
 
-1622138848 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
+1622139193 source:d:\codeblocks\projekt\projektnr2\matrixgraph.cpp
 	"matrixgraph.h"
 	"binaryheap.h"
 

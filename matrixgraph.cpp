@@ -350,6 +350,7 @@ void MatrixGraph::primAlg() {
         for(int i = 0; i<this->neighbourCount;i++) { /*Sprawdzamy droge do kazdego */
             int v = neighbours[i];
             if(bHeap.sizeVar!=0 && bHeap.findElement(0,key[v]) && getWeight(u,v) < key[v]) {
+                if(validated[v]==true) continue;
                 key[v] = getWeight(u,v);
                 p[v] = u;
             }

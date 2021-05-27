@@ -346,7 +346,7 @@ void ListGraph::bellmanFordAlg(int start) {
         for(int j=0;j<getEdgeNumber();j++) {
             edge = this->edgeMacierz[counter];
             if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
-                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1])
+                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
                 p[edge[1]] = edge[0];
                 relaxationCounter++;
             }
@@ -419,14 +419,15 @@ void ListGraph::primAlg() {
         }
 
         neighbours = countNeighbours(u);
-
         for(int i = 0; i<this->neighbourCount;i++) { /*Sprwadzamy droge do kazdego */
             int v = neighbours[i];
             if(bHeap.sizeVar!=0 && bHeap.findElement(0,key[v]) && getWeight(u,v) < key[v]) {
+                if(validated[v]==true) continue;
                 key[v] = getWeight(u,v);
                 p[v] = u;
             }
         }
+
         validated[u] = true;
         bHeap.deleteHeap();
 
