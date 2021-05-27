@@ -258,6 +258,7 @@ void MatrixGraph::dijkstraAlg(int start) {
 }
 
 void MatrixGraph::bellmanFordAlg(int start) {
+    int relaxationCounter = 0;
     int counter = 0;
     int* edge = new int[2];
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
@@ -273,12 +274,15 @@ void MatrixGraph::bellmanFordAlg(int start) {
             edge = this->edgeMacierz[counter];
             if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
                 d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
+                relaxationCounter++;
                 if(edge[1]==0) continue;
                 p[edge[1]] = edge[0];
             }
             counter++;
         }
         counter = 0; /*bo trzeba znow przejsc przez kazda krawedz*/
+        if(relaxationCounter==0) break; /*jezeli nie bylo zadnej relaksacji -> konczymy algroytm */
+        else relaxationCounter = 0;
     }
     for(int i=0;i<this->edge_num;i++) {
         edge = this->edgeMacierz[i];

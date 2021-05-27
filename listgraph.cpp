@@ -333,7 +333,7 @@ int ListGraph::getWeight(int start, int finish) {
 }
 
 void ListGraph::bellmanFordAlg(int start) {
-    int counter = 0;
+    int counter = 0, relaxationCounter = 0;
     int* edge = new int[2];
     int* d = new int[this->node_num];  /*tablica aktualnych odleglosci*/
     int* p = new int[this->node_num];  /*tablica koncowych wierzcholkow*/
@@ -346,12 +346,15 @@ void ListGraph::bellmanFordAlg(int start) {
         for(int j=0;j<getEdgeNumber();j++) {
             edge = this->edgeMacierz[counter];
             if(d[edge[1]] > d[edge[0]] + getWeight(edge[0],edge[1])) {
-                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1]);
+                d[edge[1]] = d[edge[0]] + getWeight(edge[0],edge[1])
                 p[edge[1]] = edge[0];
+                relaxationCounter++;
             }
             counter++;
         }
         counter = 0; /*bo trzeba znow przejsc przez kazda krawedz*/
+        if(relaxationCounter==0) break; /* jezeli nie bylo zadnej relaksacji -> konczymy */
+        else relaxationCounter = 0;
     }
     for(int i=0;i<this->edge_num;i++) {
         edge = this->edgeMacierz[i];
